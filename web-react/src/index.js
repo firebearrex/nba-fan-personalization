@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-import demoApp from './demoApp';
+import App from './App';
+// import CssBaseline from '@mui/material/CssBaseline';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
@@ -14,9 +16,12 @@ const client = new ApolloClient({
 });
 
 const Main = () => (
-  <ApolloProvider client={client}>
-    <demoApp />
-  </ApolloProvider>
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      {/*<CssBaseline />*/}
+      <App />
+    </ApolloProvider>
+  </BrowserRouter>
 );
 
 ReactDOM.render(<Main />, document.getElementById('root'));
