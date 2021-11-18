@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import currFanReducer from './reducers/CurrFanReducer';
 import './index.css';
 import App from './App';
-// import CssBaseline from '@mui/material/CssBaseline';
 import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 
@@ -15,11 +17,14 @@ const client = new ApolloClient({
   },
 });
 
+const store = createStore(currFanReducer);
+
 const Main = () => (
   <BrowserRouter>
     <ApolloProvider client={client}>
-      {/*<CssBaseline />*/}
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ApolloProvider>
   </BrowserRouter>
 );
