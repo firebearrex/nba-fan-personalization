@@ -74,7 +74,6 @@ const RecTeamsList = (props) => {
     <Paper
       elevation={2}
       sx={{
-        // display: 'block',
         flexGrow: 1,
         mb: 2,
         px: 4,
@@ -102,7 +101,7 @@ const RecTeamsList = (props) => {
                 primary={team.item.name}
                 secondary={
                   <>
-                    <div>- Team City: {team.details.teamCity}</div>
+                    <span>- Team City: {team.details.teamCity}</span>
                   </>
                 }
                 secondaryTypographyProps={{ pl: 1 }}
@@ -142,9 +141,13 @@ const RecTeamsList = (props) => {
                 primary={team.item.name}
                 secondary={
                   <>
-                    <div>- Initial score: {initialScore}</div>
-                    <div>- Boost score on common city: {boostOnCityScore}</div>
-                    <div>- Final score: {finalScore}</div>
+                    <span>- Initial score: {initialScore}</span>
+                    <br />
+                    <span>
+                      - Boost score on common city: {boostOnCityScore}
+                    </span>
+                    <br />
+                    <span>- Final score: {finalScore}</span>
                   </>
                 }
                 secondaryTypographyProps={{ pl: 1 }}
@@ -175,7 +178,7 @@ const RecTeamsList = (props) => {
                 primary={similarFan.displayName}
                 secondary={
                   <>
-                    <div>- Email: {similarFan.email}</div>
+                    <span>- Email: {similarFan.email}</span>
                     {/*<div>*/}
                     {/*  - Fan&apos;s cities:&nbsp;*/}
                     {/*  {fanCity.map((city, idx) => {*/}

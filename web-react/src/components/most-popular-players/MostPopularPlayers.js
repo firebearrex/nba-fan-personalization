@@ -8,7 +8,16 @@ export default function MostPopularPlayers() {
 
   if (loading) {
     return (
-      <Paper elevation={2} sx={{ display: 'block', mb: 4, px: 4, py: 4 }}>
+      <Paper
+        elevation={2}
+        sx={{
+          // display: 'block',
+          flexGrow: 1,
+          mb: 2,
+          px: 4,
+          py: 4,
+        }}
+      >
         <Typography variant={'h5'}>Loading...</Typography>
       </Paper>
     );
@@ -16,7 +25,15 @@ export default function MostPopularPlayers() {
 
   if (error) {
     return (
-      <Paper elevation={2} sx={{ display: 'block', mb: 4, px: 4, py: 4 }}>
+      <Paper
+        elevation={2}
+        sx={{
+          flexGrow: 1,
+          mb: 2,
+          px: 4,
+          py: 4,
+        }}
+      >
         <Typography variant={'h5'}>Oops, something went wrong...</Typography>
       </Paper>
     );
@@ -24,7 +41,15 @@ export default function MostPopularPlayers() {
 
   if (data.recommendations.length === 0) {
     return (
-      <Paper elevation={2} sx={{ display: 'block', mb: 4, px: 4, py: 4 }}>
+      <Paper
+        elevation={2}
+        sx={{
+          flexGrow: 1,
+          mb: 2,
+          px: 4,
+          py: 4,
+        }}
+      >
         <Typography variant={'h5'}>
           No relevant results have been found...
         </Typography>

@@ -30,30 +30,30 @@ import FanInfo from '../components/fan-info/FanInfo';
 //     paper: {
 //       padding: theme.spacing(2),
 //       display: 'flex',
-//       // overflow: 'auto',
-//       // flexDirection: 'column',
+// overflow: 'auto',
+// flexDirection: 'column',
 //     },
 //   };
-//   //   page: {
-//   //     background: '#f9f9f9',
-//   //     width: '100%',
-//   //     height: '100%',
-//   //     padding: theme.spacing(3),
-//   //   },
-//   //   drawerPaper: {
-//   //     width: drawerWidth,
-//   //   },
-//   //   active: {
-//   //     background: '#f4f4f4',
-//   //   },
-//   //   title: {
-//   //     padding: theme.spacing(2),
-//   //   },
-//   //   toolbar: theme.mixins.toolbar,
-//   //   avatar: {
-//   //     marginLeft: theme.spacing(2),
-//   //   },
-//   // };
+//   page: {
+//     background: '#f9f9f9',
+//     width: '100%',
+//     height: '100%',
+//     padding: theme.spacing(3),
+//   },
+//   drawerPaper: {
+//     width: drawerWidth,
+//   },
+//   active: {
+//     background: '#f4f4f4',
+//   },
+//   title: {
+//     padding: theme.spacing(2),
+//   },
+//   toolbar: theme.mixins.toolbar,
+//   avatar: {
+//     marginLeft: theme.spacing(2),
+//   },
+// };
 // });
 
 export default function RecDashboard() {
@@ -93,12 +93,19 @@ export default function RecDashboard() {
 
     const val = e.target.value;
     console.log(val);
+
     setUserEmailInput('');
     setFanEmailSimilar('');
-    setUserEmailSelect(val);
     setInputSubmit(false);
     setSimilarFanSubmit(false);
-    setSelectSubmit(true);
+
+    if (val !== '') {
+      setUserEmailSelect(val);
+      setSelectSubmit(true);
+    } else {
+      setUserEmailSelect('');
+      setSelectSubmit(false);
+    }
   };
 
   const handleUserInputChange = (event) => {
@@ -198,12 +205,6 @@ export default function RecDashboard() {
               onSubmit={handleUserEmailSubmit}
               sx={{
                 flexDirection: 'row',
-                // backgroundColor: (theme) =>
-                //   alpha(theme.palette.background.paper, 0.25),
-                // '&:hover': {
-                //   backgroundColor: (theme) =>
-                //     alpha(theme.palette.background.paper, 0.4),
-                // },
               }}
             >
               <TextField
@@ -262,10 +263,20 @@ export default function RecDashboard() {
             </Grid>
           )}
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{ display: 'flex', alignItems: 'stretch' }}
+            >
               <MostPopularTeams />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{ display: 'flex', alignItems: 'stretch' }}
+            >
               <MostPopularPlayers />
             </Grid>
           </Grid>

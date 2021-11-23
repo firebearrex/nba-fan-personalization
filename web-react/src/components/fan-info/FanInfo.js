@@ -1,9 +1,10 @@
 import React from 'react';
 // import { useSelector } from 'react-redux';
-import { Paper, Typography } from '@mui/material';
+import { Divider, Paper, Stack, Typography } from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CURRENT_FAN } from '../../graphql/keymaker';
 import recDashboardUtils from '../../utils/rec-dashboard-utils';
+import { Box } from '@mui/system';
 
 export default function FanInfo(props) {
   const { userEmail } = props;
@@ -57,51 +58,60 @@ export default function FanInfo(props) {
       <Typography variant={'h4'} gutterBottom>
         {`Current Fan's Information`}
       </Typography>
-      <ul
-        style={{
-          paddingInlineStart: '30px',
-        }}
-      >
-        <Typography component={'li'} variant={'body1'}>
-          {'Name: ' + currFan.displayName}
+      <Box ml={2}>
+        <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
+          - Personal Info:
         </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {'Email: ' + currFan.email}
+        <Stack
+          direction="row"
+          justifyContent={'flex-start'}
+          alignItems={'center'}
+          divider={<Divider orientation="vertical" flexItem />}
+          spacing={2}
+          sx={{ ml: 3 }}
+        >
+          <Typography variant={'body1'}>
+            {'Name: ' + currFan.displayName}
+          </Typography>
+          <Typography variant={'body1'}>{'Email: ' + currFan.email}</Typography>
+          <Typography variant={'body1'}>
+            {`Gender: ${currFan.gender === 'm' ? 'Male' : 'Female'}`}
+          </Typography>
+        </Stack>
+        <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
+          - Address:
         </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {`Gender: ${currFan.gender === 'm' ? 'Male' : 'Female'}`}
-        </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {`City: `}
-          {fanCities.map((city, idx) => {
-            return city + (idx === fanCities.length - 1 ? '' : ' | ');
-          })}
-        </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {`Zipcode: `}
-          {zipCodes.map((zipcode, idx) => {
-            return zipcode + (idx === zipCodes.length - 1 ? '' : ' | ');
-          })}
-        </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {`State: `}
-          {zipCodes.map((zipcode, idx) => {
-            return (
-              recDashboardUtils.getStateByZip(zipcode) +
-              (idx === zipCodes.length - 1 ? '' : ' | ')
-            );
-          })}
-        </Typography>
-        <Typography component={'li'} variant={'body1'}>
-          {`Similar Fans (based on SIMILAR relationship): `}
-          {similarFans.map((similarFan, idx) => {
-            return (
-              similarFan.displayName +
-              (idx === similarFans.length - 1 ? '' : ' | ')
-            );
-          })}
-        </Typography>
-      </ul>
+        <Stack
+          direction="row"
+          justifyContent={'flex-start'}
+          alignItems={'center'}
+          divider={<Divider orientation="vertical" flexItem />}
+          spacing={2}
+          sx={{ ml: 3 }}
+        >
+          <Typography variant={'body1'}>
+            {`City: `}
+            {fanCities.map((city, idx) => {
+              return city + (idx === fanCities.length - 1 ? '' : ' | ');
+            })}
+          </Typography>
+          <Typography variant={'body1'}>
+            {`Zipcode: `}
+            {zipCodes.map((zipcode, idx) => {
+              return zipcode + (idx === zipCodes.length - 1 ? '' : ' | ');
+            })}
+          </Typography>
+          <Typography variant={'body1'}>
+            {`State: `}
+            {zipCodes.map((zipcode, idx) => {
+              return (
+                recDashboardUtils.getStateByZip(zipcode)[1] +
+                (idx === zipCodes.length - 1 ? '' : ' | ')
+              );
+            })}
+          </Typography>
+        </Stack>
+      </Box>
     </Paper>
   );
 }
