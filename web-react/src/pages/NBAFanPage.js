@@ -18,10 +18,9 @@ import MyAppBar from '../components/MyAppBar';
 import RecTeamsList from '../components/rec-similar-team/RecTeamsList';
 import RecPlayersList from '../components/rec-similar-player/RecPlayersList';
 import RecFansList from '../components/rec-similar-fan/RecFansList';
-import MostPopularPlayers from '../components/most-popular-players/MostPopularPlayers';
+import MostPopularRec from '../components/MostPopularRec';
 import { MOST_ACTIVE_FANS } from '../graphql/keymaker';
-import MostPopularTeams from '../components/most-popular-teams/MostPopularTeams';
-import FanInfo from '../components/fan-info/FanInfo';
+import FanInfo from '../components/basic-info/FanInfo';
 
 // const drawerWidth = 240;
 
@@ -56,7 +55,7 @@ import FanInfo from '../components/fan-info/FanInfo';
 // };
 // });
 
-export default function RecDashboard() {
+export default function NBAFanPage() {
   // const classes = useStyles();
   // const theme = useTheme();
 
@@ -131,7 +130,7 @@ export default function RecDashboard() {
 
   return (
     <Box>
-      <MyAppBar />
+      <MyAppBar pageTitle={'NBA Fan Page'} />
       <Container
         style={{
           padding: 0,
@@ -262,24 +261,7 @@ export default function RecDashboard() {
               </Grid>
             </Grid>
           )}
-          <Grid container spacing={2}>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              sx={{ display: 'flex', alignItems: 'stretch' }}
-            >
-              <MostPopularTeams />
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              sx={{ display: 'flex', alignItems: 'stretch' }}
-            >
-              <MostPopularPlayers />
-            </Grid>
-          </Grid>
+          <MostPopularRec />
         </Grid>
       </Container>
     </Box>

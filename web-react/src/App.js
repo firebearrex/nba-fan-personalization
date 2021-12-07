@@ -1,13 +1,16 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
 import { Route } from 'react-router-dom';
-import RecDashboard from './pages/RecDashboard';
+import NBAFanPage from './pages/NBAFanPage';
 import { COLORS } from './constants/Constants';
+import NBATeamPage from './pages/NBATeamPage';
+import NBAPlayerPage from './pages/NBAPlayerPage';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: COLORS.primary,
+      main: COLORS.main,
+      dark: COLORS.dark,
     },
   },
   //   secondary: {
@@ -27,17 +30,14 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Route exact path={'/'}>
-        <RecDashboard />
+        <NBAFanPage />
       </Route>
-      {/*<Route exact path="/rec-similar-player">*/}
-      {/*  <RecSimilarPlayers />*/}
-      {/*</Route>*/}
-      {/*<Route exact path="/rec-similar-team">*/}
-      {/*  <RecSimilarTeams />*/}
-      {/*</Route>*/}
-      {/*<Route exact path="/rec-similar-fan">*/}
-      {/*  <RecSimilarFans />*/}
-      {/*</Route>*/}
+      <Route exact path={'/teams/:teamName'}>
+        <NBATeamPage />
+      </Route>
+      <Route exact path={'/players/:playerName'}>
+        <NBAPlayerPage />
+      </Route>
     </ThemeProvider>
   );
 }

@@ -52,6 +52,32 @@ const GET_CURRENT_FAN = gql`
   }
 `;
 
+const GET_CURRENT_TEAM = gql`
+  query GetCurrentTeam($teamName: String) {
+    recommendations(
+      engineID: "the-seleted-team"
+      params: { teamName: $teamName }
+    ) {
+      item
+      score
+      details
+    }
+  }
+`;
+
+const GET_CURRENT_PLAYER = gql`
+  query GetCurrentPlayer($playerName: String) {
+    recommendations(
+      engineID: "the-selected-player"
+      params: { playerName: $playerName }
+    ) {
+      item
+      score
+      details
+    }
+  }
+`;
+
 const MOST_POPULAR_TEAMS = gql`
   query MostPopularTeams {
     recommendations(engineID: "most-popular-teams", first: 10) {
@@ -87,6 +113,8 @@ export {
   GET_RECOMMENDED_TEAMS,
   GET_SIMILAR_FANS,
   GET_CURRENT_FAN,
+  GET_CURRENT_TEAM,
+  GET_CURRENT_PLAYER,
   MOST_POPULAR_TEAMS,
   MOST_POPULAR_PLAYERS,
   MOST_ACTIVE_FANS,

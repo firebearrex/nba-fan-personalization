@@ -11,8 +11,22 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => {
+  return {
+    linkText: {
+      // color: 'white',
+      textDecoration: 'none',
+      // width: '320px',
+      // flexGrow: 1,
+    },
+  };
+});
 
 const RecTeamsList = (props) => {
+  const classes = useStyles();
   const { userEmail } = props;
   const { loading, error, data } = useQuery(GET_RECOMMENDED_TEAMS, {
     // fetchPolicy: 'no-cache',
@@ -91,23 +105,32 @@ const RecTeamsList = (props) => {
         Already Followed Teams".`}
       </Typography>
       <Typography variant={'h5'} sx={{ mt: 3, mb: -1 }}>
-        Final Results:
+        Recommendation Rank:
       </Typography>
       <List>
         {data.recommendations.map((team) => (
-          <ListItem key={team.item.name}>
-            <ListItemButton divider={true}>
-              <ListItemText
-                primary={team.item.name}
-                secondary={
-                  <>
-                    <span>- Team City: {team.details.teamCity}</span>
-                  </>
-                }
-                secondaryTypographyProps={{ pl: 1 }}
-              />
-            </ListItemButton>
-          </ListItem>
+          <Link
+            to={`/teams/${team.item.name}`}
+            key={team.item.name}
+            className={classes.linkText}
+          >
+            <ListItem>
+              <ListItemButton divider={true}>
+                <ListItemText
+                  primary={team.item.name}
+                  secondary={
+                    <>
+                      <span>- Team City: {team.details.teamCity}</span>
+                    </>
+                  }
+                  primaryTypographyProps={{
+                    color: (theme) => theme.palette.text.primary,
+                  }}
+                  secondaryTypographyProps={{ pl: 1 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
       <Typography variant={'h5'} sx={{ mt: 2 }}>
@@ -194,7 +217,7 @@ const RecTeamsList = (props) => {
         })}
         <ListItem sx={{ mt: 1, pb: 0 }}>
           <ListItemText
-            primary={'- The common city between the fan and the team:'}
+            primary={'- Common city between the fan and the team:'}
             primaryTypographyProps={{
               variant: 'subtitle1',
               sx: {

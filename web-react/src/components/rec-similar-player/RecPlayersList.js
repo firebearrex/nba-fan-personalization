@@ -11,8 +11,22 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
+
+const useStyles = makeStyles(() => {
+  return {
+    linkText: {
+      // color: 'white',
+      textDecoration: 'none',
+      // width: '320px',
+      // flexGrow: 1,
+    },
+  };
+});
 
 const RecPlayersList = (props) => {
+  const classes = useStyles();
   const { userEmail } = props;
   const { loading, error, data } = useQuery(GET_RECOMMENDED_PLAYERS, {
     // fetchPolicy: 'no-cache',
@@ -92,32 +106,41 @@ const RecPlayersList = (props) => {
         Already Followed Players".`}
       </Typography>
       <Typography variant={'h5'} sx={{ mt: 3, mb: -1 }}>
-        Final Results:
+        Recommendation Rank:
       </Typography>
       <List>
         {data.recommendations.map((player) => {
           const playsFor = player.details.playsFor
             ? player.details.playsFor
             : 'null';
-          const playsInCity = player.details.playsIncity
+          const playsInCity = player.details.playsInCity
             ? player.details.playsIncity
             : 'null';
           return (
-            <ListItem key={player.item.name}>
-              <ListItemButton divider={true}>
-                <ListItemText
-                  primary={player.item.name}
-                  secondary={
-                    <>
-                      <span>- Plays for team: {playsFor}</span>
-                      <br />
-                      <span>- Plays in City: {playsInCity}</span>
-                    </>
-                  }
-                  secondaryTypographyProps={{ pl: 1 }}
-                />
-              </ListItemButton>
-            </ListItem>
+            <Link
+              to={`/players/${player.item.name}`}
+              key={player.item.name}
+              className={classes.linkText}
+            >
+              <ListItem key={player.item.name}>
+                <ListItemButton divider={true}>
+                  <ListItemText
+                    primary={player.item.name}
+                    secondary={
+                      <>
+                        <span>- Plays for team: {playsFor}</span>
+                        <br />
+                        <span>- Plays in City: {playsInCity}</span>
+                      </>
+                    }
+                    primaryTypographyProps={{
+                      color: (theme) => theme.palette.text.primary,
+                    }}
+                    secondaryTypographyProps={{ pl: 1 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           );
         })}
       </List>
@@ -202,7 +225,7 @@ const RecPlayersList = (props) => {
         ))}
         <ListItem sx={{ mt: 1, pb: 0 }}>
           <ListItemText
-            primary={'- The common city between the fan and the player:'}
+            primary={'- Common city between the fan and the player:'}
             primaryTypographyProps={{
               variant: 'subtitle1',
               sx: {

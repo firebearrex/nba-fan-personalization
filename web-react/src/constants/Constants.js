@@ -12,6 +12,7 @@ export const USER_ROLE = {
 };
 
 export const COLORS = {
-  primary: 'rgb(33, 150, 243)',
+  main: '#2196f3',
+  dark: '#051c2d',
   secondary: '#62B244',
 };
