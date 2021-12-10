@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import {
+  Box,
   Divider,
   Grid,
   List,
@@ -11,12 +12,14 @@ import {
   ListItemText,
   Paper,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import LabelIcon from '@mui/icons-material/Label';
+import LooksOneIcon from '@mui/icons-material/LooksOne';
+import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import Looks3Icon from '@mui/icons-material/Looks3';
 
 import { GET_SIMILAR_FANS } from '../../graphql/keymaker';
-import recDashboardUtils from '../../utils/rec-dashboard-utils';
 
 /**
  * Calculate the mean number of common teams of all recommendations.
@@ -126,11 +129,11 @@ const getImpactRanking = (
   const impactRanking = [
     {
       impactScore: commonTeamImpact,
-      impactName: 'Common interest on teams',
+      impactName: 'Team interest',
     },
     {
       impactScore: commonPlayersImpact,
-      impactName: 'Common interest on players',
+      impactName: 'Player interest',
     },
     {
       impactScore: commonAgeDiffImpact,
@@ -157,7 +160,6 @@ const RecFansList = (props) => {
       <Paper
         elevation={2}
         sx={{
-          // display: 'block',
           flexGrow: 1,
           mb: 2,
           px: 4,
@@ -174,7 +176,6 @@ const RecFansList = (props) => {
       <Paper
         elevation={2}
         sx={{
-          // display: 'block',
           flexGrow: 1,
           mb: 2,
           px: 4,
@@ -191,7 +192,6 @@ const RecFansList = (props) => {
       <Paper
         elevation={2}
         sx={{
-          // display: 'block',
           flexGrow: 1,
           mb: 2,
           px: 4,
@@ -226,7 +226,6 @@ const RecFansList = (props) => {
           py: 4,
         }}
       >
-        {/* The master title. */}
         <Typography variant={'h4'}>Recommended Similar Fans</Typography>
         <Typography
           variant={'body2'}
@@ -239,10 +238,35 @@ const RecFansList = (props) => {
         </Typography>
 
         {/* Section 1: Recommendation Rank */}
-        <Typography variant={'h5'} sx={{ mt: 3, mb: -1 }}>
+        <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}>
           Recommendation Rank:
         </Typography>
         <List>
+          <ListItem sx={{ px: 0, py: 0 }} divider={true}>
+            <Box sx={{ py: 1, px: 2, width: '100%' }}>
+              <Grid container spacing={2}>
+                <Grid
+                  item
+                  xs={5}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  style={{ paddingTop: 8, paddingBottom: 8 }}
+                >
+                  <ListItemText primary={'Name'} />
+                </Grid>
+                <Divider orientation={'vertical'} variant={'middle'} flexItem />
+                <Grid
+                  item
+                  xs
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  style={{ paddingTop: 8, paddingBottom: 8 }}
+                >
+                  <ListItemText primary={'Impact factors'} />
+                </Grid>
+              </Grid>
+            </Box>
+          </ListItem>
           {data.recommendations.map((similarFan) => {
             const fanEmail = similarFan.item.email;
             const fanName = similarFan.item.displayName;
@@ -268,314 +292,146 @@ const RecFansList = (props) => {
                       xs={4.5}
                       // sx={{ display: 'flex', alignItems: 'stretch' }}
                     >
-                      <ListItemText
-                        id={fanEmail}
-                        primary={fanName}
-                        // secondary={
-                        //   <>
-                        //     <span>- Email: {fanEmail}</span>
-                        //   </>
-                        // }
-                        // secondaryTypographyProps={{ variant: 'caption' }}
-                      />
+                      <ListItemText id={fanEmail} primary={fanName} />
                     </Grid>
                     <Grid item xs={7.5}>
                       <Stack
                         justifyContent={'center'}
-                        alignItems={'flex-start'}
+                        alignItems={'stretch'}
                         divider={
-                          <Divider
-                            variant={'middle'}
-                            flexItem
-                            sx={{ my: 0.5 }}
-                          />
+                          <Divider variant={'middle'} flexItem sx={{ my: 1 }} />
                         }
                       >
-                        <Stack
-                          direction={'row'}
-                          spacing={0}
-                          sx={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'stretch',
-                          }}
-                        >
-                          <ListItemIcon
+                        <Tooltip title={'Primary impact'} followCursor={true}>
+                          <Paper
+                            elevation={0}
                             sx={{
-                              alignItems: 'center',
-                              minWidth: 0,
-                              width: 28,
+                              bgcolor: 'rgb(253, 237, 237)',
+                              borderRadius: '4px',
+                              // p: '6px 16px',
+                              px: '16px',
+                              py: '4px',
                             }}
                           >
-                            <LabelIcon sx={{ color: 'red' }} />
-                          </ListItemIcon>
-                          <ListItemText
-                            compopnent={'div'}
+                            <Stack
+                              direction={'row'}
+                              spacing={0}
+                              sx={{
+                                justifyContent: 'flex-start',
+                                alignItems: 'stretch',
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 36,
+                                }}
+                              >
+                                <LooksOneIcon sx={{ color: 'red' }} />
+                              </ListItemIcon>
+                              <ListItemText
+                                compopnent={'div'}
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'stretch',
+                                }}
+                                secondary={impactRanking[0].impactName}
+                                secondaryTypographyProps={{
+                                  // textAlign: 'center',
+                                  variant: 'body2',
+                                  color: 'rgb(95, 33, 32)',
+                                }}
+                              />
+                            </Stack>
+                          </Paper>
+                        </Tooltip>
+                        <Tooltip title={'Secondary impact'} followCursor={true}>
+                          <Paper
+                            elevation={0}
                             sx={{
-                              display: 'flex',
-                              alignItems: 'stretch',
-                              verticalAlign: 'middle',
-                            }}
-                            secondary={
-                              'Primary impact: ' + impactRanking[0].impactName
-                            }
-                            secondaryTypographyProps={{
-                              // textAlign: 'center',
-                              variant: 'body2',
-                            }}
-                          />
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={0}
-                          sx={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'stretch',
-                          }}
-                        >
-                          <ListItemIcon
-                            sx={{
-                              alignItems: 'center',
-                              minWidth: 0,
-                              width: 28,
+                              bgcolor: 'rgb(255, 244, 229)',
+                              borderRadius: '4px',
+                              px: '16px',
+                              py: '4px',
                             }}
                           >
-                            <LabelIcon sx={{ color: 'orange' }} />
-                          </ListItemIcon>
-                          <ListItemText
+                            <Stack
+                              direction={'row'}
+                              spacing={0}
+                              sx={{
+                                justifyContent: 'flex-start',
+                                alignItems: 'stretch',
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 36,
+                                }}
+                              >
+                                <LooksTwoIcon sx={{ color: 'orange' }} />
+                              </ListItemIcon>
+                              <ListItemText
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'stretch',
+                                }}
+                                secondary={impactRanking[1].impactName}
+                                secondaryTypographyProps={{
+                                  variant: 'body2',
+                                  color: 'rgb(102, 60, 0)',
+                                }}
+                              />
+                            </Stack>
+                          </Paper>
+                        </Tooltip>
+                        <Tooltip title={'Least impact'} followCursor={true}>
+                          <Paper
+                            elevation={0}
                             sx={{
-                              display: 'flex',
-                              alignItems: 'stretch',
-                              verticalAlign: 'middle',
-                            }}
-                            secondary={
-                              'Secondary impact: ' + impactRanking[1].impactName
-                            }
-                            secondaryTypographyProps={{
-                              variant: 'body2',
-                            }}
-                          />
-                        </Stack>
-                        <Stack
-                          direction={'row'}
-                          spacing={0}
-                          sx={{
-                            justifyContent: 'flex-start',
-                            alignItems: 'stretch',
-                          }}
-                        >
-                          <ListItemIcon
-                            sx={{
-                              alignItems: 'center',
-                              minWidth: 0,
-                              width: 28,
+                              bgcolor: 'rgb(237, 247, 237)',
+                              borderRadius: '4px',
+                              px: '16px',
+                              py: '4px',
                             }}
                           >
-                            <LabelIcon sx={{ color: 'green' }} />
-                          </ListItemIcon>
-                          <ListItemText
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'stretch',
-                              verticalAlign: 'middle',
-                            }}
-                            secondary={
-                              'Least impact: ' + impactRanking[2].impactName
-                            }
-                            secondaryTypographyProps={{
-                              variant: 'body2',
-                            }}
-                          />
-                        </Stack>
+                            <Stack
+                              direction={'row'}
+                              spacing={0}
+                              sx={{
+                                justifyContent: 'flex-start',
+                                alignItems: 'stretch',
+                              }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 36,
+                                }}
+                              >
+                                <Looks3Icon sx={{ color: 'green' }} />
+                              </ListItemIcon>
+                              <ListItemText
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'stretch',
+                                }}
+                                secondary={impactRanking[2].impactName}
+                                secondaryTypographyProps={{
+                                  variant: 'body2',
+                                  color: 'rgb(30, 70, 32)',
+                                }}
+                              />
+                            </Stack>
+                          </Paper>
+                        </Tooltip>
                       </Stack>
                     </Grid>
                   </Grid>
                 </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-
-        {/* Section 2: Recommendation Analysis */}
-        <Typography variant={'h5'} sx={{ mt: 2 }}>
-          Additional Information:
-        </Typography>
-        <List>
-          {/*<ListItem sx={{ mt: 1, pb: 0 }}>*/}
-          {/*  <ListItemText*/}
-          {/*    primary={'- Recommendation score breakdown'}*/}
-          {/*    primaryTypographyProps={{*/}
-          {/*      variant: 'subtitle1',*/}
-          {/*      sx: {*/}
-          {/*        fontSize: '1.1rem',*/}
-          {/*      },*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*</ListItem>*/}
-          {/*{data.recommendations.map((similarFan) => {*/}
-          {/*  const initialScore = similarFan.details.initialScore;*/}
-          {/*  const boostOnCommonTeamScore = similarFan.details*/}
-          {/*    .boostOnCommonTeamScore*/}
-          {/*    ? similarFan.details.boostOnCommonTeamScore*/}
-          {/*    : 0;*/}
-          {/*  const boostOnCommonPlayerScore = similarFan.details*/}
-          {/*    .boostOnCommonPlayerScore*/}
-          {/*    ? similarFan.details.boostOnCommonPlayerScore*/}
-          {/*    : 0;*/}
-          {/*  const boostOnCommonCatScore = similarFan.details*/}
-          {/*    .boostOnCommonCatScore*/}
-          {/*    ? similarFan.details.boostOnCommonCatScore*/}
-          {/*    : 0;*/}
-          {/*  const boostOnAgeDiffScore = similarFan.details.boostOnAgeDiffScore*/}
-          {/*    ? similarFan.details.boostOnAgeDiffScore*/}
-          {/*    : 0;*/}
-          {/*  const finalScore = similarFan.score;*/}
-          {/*  return (*/}
-          {/*    <ListItem*/}
-          {/*      key={similarFan.item.email}*/}
-          {/*      divider={true}*/}
-          {/*      sx={{ ml: 2, mr: 2, width: 'auto' }}*/}
-          {/*    >*/}
-          {/*      <ListItemText*/}
-          {/*        primary={similarFan.item.displayName}*/}
-          {/*        secondary={*/}
-          {/*          <>*/}
-          {/*            <div>{`- Initial score: ${initialScore}`}</div>*/}
-          {/*            <div>*/}
-          {/*              {`- Boost score on commonly interested teams: ${boostOnCommonTeamScore}`}*/}
-          {/*            </div>*/}
-          {/*            <div>*/}
-          {/*              {`- Boost score on commonly interested players: ${boostOnCommonPlayerScore}`}*/}
-          {/*            </div>*/}
-          {/*            <div>{`- Boost score on common fan's labels: ${boostOnCommonCatScore}`}</div>*/}
-          {/*            <div>{`- Boost score on age difference: ${boostOnAgeDiffScore}`}</div>*/}
-          {/*            <div>{`- Final score: ${finalScore}`}</div>*/}
-          {/*          </>*/}
-          {/*        }*/}
-          {/*        secondaryTypographyProps={{ pl: 1 }}*/}
-          {/*      />*/}
-          {/*    </ListItem>*/}
-          {/*  );*/}
-          {/*})}*/}
-          <ListItem sx={{ mt: 1, pb: 0 }}>
-            <ListItemText
-              primary={'- Common zipcode:'}
-              primaryTypographyProps={{
-                variant: 'subtitle1',
-                sx: {
-                  fontSize: '1.1rem',
-                },
-              }}
-            />
-          </ListItem>
-          {data.recommendations.map((similarFan) => {
-            const commonZip = similarFan.details.commonZip;
-            const [st] = recDashboardUtils.getStateByZip(commonZip);
-            return (
-              <ListItem
-                key={similarFan.item.email}
-                divider={true}
-                sx={{ ml: 2, mr: 2, width: 'auto' }}
-              >
-                <ListItemText
-                  primary={similarFan.item.displayName}
-                  secondary={
-                    <>
-                      <div>{`- Common zipcode: ${commonZip}`}</div>
-                      <div>{`- State: ${st}`}</div>
-                    </>
-                  }
-                  secondaryTypographyProps={{ pl: 1 }}
-                />
-              </ListItem>
-            );
-          })}
-          <ListItem sx={{ mt: 1, pb: 0 }}>
-            <ListItemText
-              primary={'- Commonly interested teams:'}
-              primaryTypographyProps={{
-                variant: 'subtitle1',
-                sx: {
-                  fontSize: '1.1rem',
-                },
-              }}
-            />
-          </ListItem>
-          {data.recommendations.map((similarFan) => {
-            const commonTeams = similarFan.details.commonTeams
-              ? similarFan.details.commonTeams
-              : [];
-            const firstFiveTeams = commonTeams.slice(0, 5);
-            const lastTrailing = commonTeams.length <= 5 ? '' : ' ...';
-            return (
-              <ListItem
-                key={similarFan.item.email}
-                divider={true}
-                sx={{ ml: 2, mr: 2, width: 'auto' }}
-              >
-                <ListItemText
-                  primary={similarFan.item.displayName}
-                  secondary={
-                    <>
-                      <div>{`- Total number of similar teams: ${commonTeams.length}`}</div>
-                      <div>
-                        {`- Commonly interested teams (Limit 5): `}
-                        {firstFiveTeams.map(
-                          (team, idx) =>
-                            team.name +
-                            (idx === firstFiveTeams.length - 1
-                              ? lastTrailing
-                              : ' | ')
-                        )}
-                      </div>
-                    </>
-                  }
-                  secondaryTypographyProps={{ pl: 1 }}
-                />
-              </ListItem>
-            );
-          })}
-          <ListItem sx={{ mt: 1, pb: 0 }}>
-            <ListItemText
-              primary={'- Commonly interested players:'}
-              primaryTypographyProps={{
-                variant: 'subtitle1',
-                sx: {
-                  fontSize: '1.1rem',
-                },
-              }}
-            />
-          </ListItem>
-          {data.recommendations.map((similarFan) => {
-            const commonPlayers = similarFan.details.commonPlayers
-              ? similarFan.details.commonPlayers
-              : [];
-            const firstFivePlayers = commonPlayers.slice(0, 5);
-            const lastTrailing = commonPlayers.length <= 5 ? '' : ' ...';
-            return (
-              <ListItem
-                key={similarFan.item.email}
-                divider={true}
-                sx={{ ml: 2, mr: 2, width: 'auto' }}
-              >
-                <ListItemText
-                  primary={similarFan.item.displayName}
-                  secondary={
-                    <>
-                      <div>{`- Total number of similar players: ${commonPlayers.length}`}</div>
-                      <div>
-                        {`- Commonly interested players (Limit 5): `}
-                        {firstFivePlayers.map(
-                          (player, idx) =>
-                            player.name +
-                            (idx === firstFivePlayers.length - 1
-                              ? lastTrailing
-                              : ' | ')
-                        )}
-                      </div>
-                    </>
-                  }
-                  secondaryTypographyProps={{ pl: 1 }}
-                />
               </ListItem>
             );
           })}
