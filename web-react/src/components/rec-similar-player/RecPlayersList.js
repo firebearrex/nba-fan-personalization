@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { useQuery } from '@apollo/client';
 
-import { GET_RECOMMENDED_PLAYERS } from '../../graphql/keymaker';
 import {
   List,
   ListItem,
@@ -13,6 +11,8 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+
+import { GET_RECOMMENDED_PLAYERS } from '../../graphql/keymaker';
 
 const useStyles = makeStyles(() => {
   return {
@@ -25,9 +25,13 @@ const useStyles = makeStyles(() => {
   };
 });
 
+/**
+ * The React component.
+ */
 const RecPlayersList = (props) => {
   const classes = useStyles();
   const { userEmail } = props;
+
   const { loading, error, data } = useQuery(GET_RECOMMENDED_PLAYERS, {
     // fetchPolicy: 'no-cache',
     variables: { email: userEmail },
@@ -84,6 +88,10 @@ const RecPlayersList = (props) => {
     );
   }
 
+  /**
+   * Get the mean values for further calculating the impact factors.
+   */
+
   return (
     <Paper
       elevation={2}
@@ -105,7 +113,7 @@ const RecPlayersList = (props) => {
         "Liked by Similar Fans", "Common City" as well as "Excluding 
         Already Followed Players".`}
       </Typography>
-      <Typography variant={'h5'} sx={{ mt: 3, mb: -1 }}>
+      <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}>
         Recommendation Rank:
       </Typography>
       <List>
