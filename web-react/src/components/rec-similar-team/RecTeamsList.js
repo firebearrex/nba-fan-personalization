@@ -291,21 +291,15 @@ const RecTeamsList = (props) => {
               key={teamName}
               className={classes.linkText}
             >
-              <ListItem>
+              <ListItem sx={{ px: 0, py: 0 }}>
                 <ListItemButton divider={true}>
                   <Grid container spacing={2} alignItems={'center'}>
                     <Grid item xs={4.5}>
                       <ListItemText
                         primary={teamName}
-                        // secondary={
-                        //   <>
-                        //     <span>- Team City: {team.details.teamCity}</span>
-                        //   </>
-                        // }
                         primaryTypographyProps={{
                           color: (theme) => theme.palette.text.primary,
                         }}
-                        // secondaryTypographyProps={{ pl: 1 }}
                       />
                     </Grid>
                     <Grid item xs={7.5}>

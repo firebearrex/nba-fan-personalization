@@ -80,7 +80,7 @@ const GET_CURRENT_PLAYER = gql`
 
 const MOST_POPULAR_TEAMS = gql`
   query MostPopularTeams {
-    recommendations(engineID: "most-popular-teams", first: 10) {
+    recommendations(engineID: "most-popular-teams", first: 35) {
       item
       score
       details
@@ -90,7 +90,7 @@ const MOST_POPULAR_TEAMS = gql`
 
 const MOST_POPULAR_PLAYERS = gql`
   query MostPopularPlayers {
-    recommendations(engineID: "most-popular-players", first: 10) {
+    recommendations(engineID: "most-popular-players", first: 35) {
       item
       score
       details
