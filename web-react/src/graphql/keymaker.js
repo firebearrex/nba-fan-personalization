@@ -5,7 +5,7 @@ const GET_RECOMMENDED_PLAYERS = gql`
     recommendations(
       engineID: "nba-recommended-players-2"
       params: { email: $email }
-      first: 5
+      first: 8
     ) {
       item
       score
@@ -19,7 +19,7 @@ const GET_RECOMMENDED_TEAMS = gql`
     recommendations(
       engineID: "nba-recommended-teams"
       params: { email: $email }
-      first: 5
+      first: 8
     ) {
       item
       score

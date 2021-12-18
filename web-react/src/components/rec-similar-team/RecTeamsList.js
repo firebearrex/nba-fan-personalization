@@ -115,6 +115,15 @@ const getBoostOnRankImpact = (recTeam, meanBoostOnRank) => {
   );
 };
 
+/**
+ * Sort the impact factor's list.
+ *
+ * @param recTeam the recommended team.
+ * @param meanBoostOnRels the pre-computed mean value of boostOnRels score.
+ * @param meanBoostOnAgeDiff the pre-computed mean value of boostOnAgeDiff score.
+ * @param meanBoostOnRank the pre-computed mean value of boostOnRank score.
+ * @returns {[{impactName: string, impactScore: number}]} the sorted impact list
+ */
 const getImpactRanking = (
   recTeam,
   meanBoostOnRels,
@@ -160,6 +169,7 @@ const getImpactRanking = (
 const RecTeamsList = (props) => {
   const classes = useStyles();
   const { userEmail } = props;
+
   const { loading, error, data } = useQuery(GET_RECOMMENDED_TEAMS, {
     // fetchPolicy: 'no-cache',
     variables: { email: userEmail },
@@ -216,6 +226,9 @@ const RecTeamsList = (props) => {
     );
   }
 
+  /**
+   * Get the mean values for further calculating the impact factors.
+   */
   const meanBoostOnRels = getMeanBoostOnRels(data);
   console.log('meanBoostOnRels:', meanBoostOnRels);
   const meanBoostOnAgeDiff = getMeanBoostOnAgeDiff(data);
@@ -244,7 +257,7 @@ const RecTeamsList = (props) => {
         as well as "Team's rank".`}
       </Typography>
 
-      {/* Section 1: Recommendation Rank */}
+      {/* Recommendation Rank */}
       <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}>
         Recommendation Rank:
       </Typography>
