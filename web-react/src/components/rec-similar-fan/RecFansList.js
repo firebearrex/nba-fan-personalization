@@ -20,6 +20,7 @@ import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import Looks3Icon from '@mui/icons-material/Looks3';
 
 import { GET_SIMILAR_FANS } from '../../graphql/keymaker';
+import { useHistory, useParams } from 'react-router-dom';
 
 /**
  * Calculate the mean value of Boost Phase 1 - Boost on Common Team Interest.
@@ -155,13 +156,20 @@ const getImpactRanking = (
 /**
  * The React component.
  */
-const RecFansList = (props) => {
-  const { userEmail, handleSimilarFanClick } = props;
+const RecFansList = () => {
+  const history = useHistory();
+  const { fanEmail } = useParams();
 
   const { loading, error, data } = useQuery(GET_SIMILAR_FANS, {
     // fetchPolicy: 'no-cache',
-    variables: { email: userEmail },
+    variables: { email: fanEmail },
   });
+
+  const handleSimilarFanClick = (e) => {
+    const simFanEmail = e.target.parentElement.id;
+    console.log("Similar fan's email:", simFanEmail);
+    history.push(`/fans/${simFanEmail}`);
+  };
 
   if (loading) {
     return (
@@ -174,13 +182,24 @@ const RecFansList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>Loading...</Typography>
       </Paper>
     );
   }
 
   if (error) {
-    console.log(error);
+    console.log('RecFanList error message:', error);
     return (
       <Paper
         elevation={2}
@@ -191,6 +210,17 @@ const RecFansList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>Oops, something went wrong...</Typography>
       </Paper>
     );
@@ -207,6 +237,17 @@ const RecFansList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>
           No relevant results have been found...
         </Typography>
@@ -244,11 +285,12 @@ const RecFansList = (props) => {
             Zipcode", "Common Team Interest", "Common Player Interest", "Common
             Categorizations" as well as "Age Difference".`}
       </Typography>
+      <Divider sx={{ mt: 1, mb: 1 }} />
 
       {/* Section 1: Recommendation Rank */}
-      <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}>
-        Recommendation Rank:
-      </Typography>
+      {/* <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}> */}
+      {/*   Recommendation Rank: */}
+      {/* </Typography> */}
       <List>
         <ListItem sx={{ px: 0, py: 0 }} divider={true}>
           <Box sx={{ py: 1, px: 2, width: '100%' }}>

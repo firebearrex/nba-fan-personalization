@@ -65,6 +65,19 @@ const GET_CURRENT_TEAM = gql`
   }
 `;
 
+const GET_TEAM_ROSTER = gql`
+  query GetTeamRoster($teamName: String) {
+    recommendations(
+      engineID: "team-current-players"
+      params: { teamName: $teamName }
+    ) {
+      item
+      score
+      details
+    }
+  }
+`;
+
 const GET_CURRENT_PLAYER = gql`
   query GetCurrentPlayer($playerName: String) {
     recommendations(
@@ -108,14 +121,30 @@ const MOST_ACTIVE_FANS = gql`
   }
 `;
 
+const GET_MOST_IMPORTANT_FANS_FOR_TEAM = gql`
+  query GetMostImportantFansForTeam($teamName: String) {
+    recommendations(
+      engineID: "most-important-fans-team"
+      params: { teamName: $teamName }
+      first: 20
+    ) {
+      item
+      score
+      details
+    }
+  }
+`;
+
 export {
   GET_RECOMMENDED_PLAYERS,
   GET_RECOMMENDED_TEAMS,
   GET_SIMILAR_FANS,
   GET_CURRENT_FAN,
   GET_CURRENT_TEAM,
+  GET_TEAM_ROSTER,
   GET_CURRENT_PLAYER,
   MOST_POPULAR_TEAMS,
   MOST_POPULAR_PLAYERS,
   MOST_ACTIVE_FANS,
+  GET_MOST_IMPORTANT_FANS_FOR_TEAM,
 };

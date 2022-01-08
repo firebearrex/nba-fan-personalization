@@ -15,12 +15,10 @@ import {
 import TextField from '@mui/material/TextField';
 import { useQuery } from '@apollo/client';
 import MyAppBar from '../components/MyAppBar';
-import RecTeamsList from '../components/rec-similar-team/RecTeamsList';
-import RecPlayersList from '../components/rec-similar-player/RecPlayersList';
-import RecFansList from '../components/rec-similar-fan/RecFansList';
-import MostPopularRec from '../components/MostPopularRec';
 import { MOST_ACTIVE_FANS } from '../graphql/keymaker';
-import FanInfo from '../components/basic-info/FanInfo';
+import { Route, useHistory } from 'react-router-dom';
+import NBAFanPageRecs from '../components/layout/NBAFanPageRecs';
+import MostPopularRec from '../components/layout/MostPopularRec';
 
 // const drawerWidth = 240;
 
@@ -58,34 +56,22 @@ import FanInfo from '../components/basic-info/FanInfo';
 export default function NBAFanPage() {
   // const classes = useStyles();
   // const theme = useTheme();
+  const history = useHistory();
 
   const [userEmailSelect, setUserEmailSelect] = useState('');
-  const [selectSubmit, setSelectSubmit] = useState(false);
+  // const [selectSubmit, setSelectSubmit] = useState(false);
   const [userEmailInput, setUserEmailInput] = useState('');
-  const [inputSubmit, setInputSubmit] = useState(false);
-  const [fanEmailSimilar, setFanEmailSimilar] = useState('');
-  const [similarFanSubmit, setSimilarFanSubmit] = useState(false);
+  // const [inputSubmit, setInputSubmit] = useState(false);
+  // const [fanEmailSimilar, setFanEmailSimilar] = useState('');
+  // const [similarFanSubmit, setSimilarFanSubmit] = useState(false);
 
   const { loading, error, data } = useQuery(MOST_ACTIVE_FANS, {});
 
-  const whichEmail = () => {
-    if (userEmailSelect) return userEmailSelect;
-    else if (userEmailInput) return userEmailInput;
-    else if (fanEmailSimilar) return fanEmailSimilar;
-  };
-
-  const handleSimilarFanClick = (e) => {
-    const val = e.target.parentElement.id;
-    console.log(val);
-
-    setUserEmailSelect('');
-    setUserEmailInput('');
-    setFanEmailSimilar(val);
-
-    setSelectSubmit(false);
-    setInputSubmit(false);
-    setSimilarFanSubmit(true);
-  };
+  // const whichEmail = () => {
+  //   if (userEmailSelect) return userEmailSelect;
+  //   else if (userEmailInput) return userEmailInput;
+  //   else if (fanEmailSimilar) return fanEmailSimilar;
+  // };
 
   const handleUserEmailSelect = (e) => {
     e.preventDefault();
@@ -93,17 +79,18 @@ export default function NBAFanPage() {
     const val = e.target.value;
     console.log(val);
 
-    setUserEmailInput('');
-    setFanEmailSimilar('');
-    setInputSubmit(false);
-    setSimilarFanSubmit(false);
+    // setUserEmailInput('');
+    // setFanEmailSimilar('');
+    // setInputSubmit(false);
+    // setSimilarFanSubmit(false);
 
     if (val !== '') {
       setUserEmailSelect(val);
-      setSelectSubmit(true);
+      // setSelectSubmit(true);
+      history.push(`/fans/${val}`);
     } else {
-      setUserEmailSelect('');
-      setSelectSubmit(false);
+      // setUserEmailSelect('');
+      // setSelectSubmit(false);
     }
   };
 
@@ -119,10 +106,11 @@ export default function NBAFanPage() {
     if (userEmailInput) {
       console.log('The submitted email is:', userEmailInput);
       setUserEmailSelect('');
-      setFanEmailSimilar('');
-      setSelectSubmit(false);
-      setSimilarFanSubmit(false);
-      setInputSubmit(true);
+      // setFanEmailSimilar('');
+      // setSelectSubmit(false);
+      // setSimilarFanSubmit(false);
+      // setInputSubmit(true);
+      history.push(`/fans/${userEmailInput}`);
     } else {
       alert("Please enter the fan's e-mail address before submitting.");
     }
@@ -139,11 +127,11 @@ export default function NBAFanPage() {
       >
         <Paper elevation={2} sx={{ mb: 4, px: 4, py: 4 }}>
           <Stack
-            direction="row"
+            direction={'row'}
             justifyContent={'center'}
             alignItems={'center'}
             divider={
-              <Divider orientation="vertical" flexItem>
+              <Divider orientation={'vertical'} flexItem>
                 OR
               </Divider>
             }
@@ -154,7 +142,7 @@ export default function NBAFanPage() {
               component={'form'}
               variant={'standard'}
               noValidate
-              autoComplete="off"
+              autoComplete={'off'}
               sx={{
                 mb: 0.5,
                 flexDirection: 'row',
@@ -167,18 +155,18 @@ export default function NBAFanPage() {
                 // },
               }}
             >
-              <InputLabel id="select-fan">
+              <InputLabel id={'select-fan'}>
                 Select a fan to view the recommendations
               </InputLabel>
               <Select
                 color={'primary'}
                 fullWidth
-                labelId="select-fan"
+                labelId={'select-fan'}
                 value={userEmailSelect}
-                label="Select a fan to view the recommendations"
+                label={'Select a fan to view the recommendations'}
                 onChange={handleUserEmailSelect}
               >
-                <MenuItem value="">
+                <MenuItem value={''}>
                   <em>None</em>
                 </MenuItem>
                 {loading && (
@@ -200,18 +188,18 @@ export default function NBAFanPage() {
               fullWidth
               component={'form'}
               noValidate
-              autoComplete="off"
+              autoComplete={'off'}
               onSubmit={handleUserEmailSubmit}
               sx={{
                 flexDirection: 'row',
               }}
             >
               <TextField
-                id="search"
+                id={'search'}
                 label="Search by user's email to view the recommendations"
                 value={userEmailInput}
                 onChange={handleUserInputChange}
-                type="text"
+                type={'text'}
                 sx={{ flexGrow: 1 }}
               />
               <Button
@@ -227,40 +215,9 @@ export default function NBAFanPage() {
           </Stack>
         </Paper>
         <Grid container>
-          {(selectSubmit || inputSubmit || similarFanSubmit) && (
-            <Grid container spacing={2} sx={{ mb: 2 }}>
-              <Grid item xs={12}>
-                <FanInfo userEmail={whichEmail()} />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ display: 'flex', alignItems: 'stretch' }}
-              >
-                <RecTeamsList userEmail={whichEmail()} />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ display: 'flex', alignItems: 'stretch' }}
-              >
-                <RecPlayersList userEmail={whichEmail()} />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={4}
-                sx={{ display: 'flex', alignItems: 'stretch' }}
-              >
-                <RecFansList
-                  userEmail={whichEmail()}
-                  handleSimilarFanClick={handleSimilarFanClick}
-                />
-              </Grid>
-            </Grid>
-          )}
+          <Route exact path={'/fans/:fanEmail'}>
+            <NBAFanPageRecs />
+          </Route>
           <MostPopularRec />
         </Grid>
       </Container>

@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { GET_RECOMMENDED_TEAMS } from '../../graphql/keymaker';
@@ -166,13 +166,14 @@ const getImpactRanking = (
 /**
  * The React component.
  */
-const RecTeamsList = (props) => {
+const RecTeamsList = () => {
   const classes = useStyles();
-  const { userEmail } = props;
+  // const { userEmail } = props;
+  const { fanEmail } = useParams();
 
   const { loading, error, data } = useQuery(GET_RECOMMENDED_TEAMS, {
     // fetchPolicy: 'no-cache',
-    variables: { email: userEmail },
+    variables: { email: fanEmail },
   });
 
   if (loading) {
@@ -186,6 +187,17 @@ const RecTeamsList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>Loading...</Typography>
       </Paper>
     );
@@ -203,6 +215,17 @@ const RecTeamsList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>Oops, something went wrong...</Typography>
       </Paper>
     );
@@ -219,6 +242,17 @@ const RecTeamsList = (props) => {
           py: 4,
         }}
       >
+        <Typography variant={'h4'}>Recommended Teams</Typography>
+        <Typography
+          variant={'body2'}
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.text.secondary }}
+        >
+          {`Note: The recommendation is made based on factors including 
+        "Relationship with similar fans", "Age difference with similar fans" 
+        as well as "Team's rank".`}
+        </Typography>
+        <Divider sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'}>
           No relevant results have been found...
         </Typography>
@@ -256,11 +290,12 @@ const RecTeamsList = (props) => {
         "Relationship with similar fans", "Age difference with similar fans" 
         as well as "Team's rank".`}
       </Typography>
+      <Divider sx={{ mt: 1, mb: 1 }} />
 
       {/* Recommendation Rank */}
-      <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}>
-        Recommendation Rank:
-      </Typography>
+      {/* <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}> */}
+      {/*   Recommendation Rank: */}
+      {/* </Typography> */}
       <List>
         <ListItem sx={{ px: 0, py: 0 }} divider={true}>
           <Box sx={{ py: 1, px: 2, width: '100%' }}>

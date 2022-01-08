@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 export default function NBAPlayerPage() {
   const { playerName } = useParams();
-  console.log(playerName);
+  console.log("Current player's name:", playerName);
 
   return (
     <Box>

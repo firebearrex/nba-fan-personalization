@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import MostPopularTeams from './most-popular-teams/MostPopularTeams';
-import MostPopularPlayers from './most-popular-players/MostPopularPlayers';
+import MostPopularTeams from '../most-popular-teams/MostPopularTeams';
+import MostPopularPlayers from '../most-popular-players/MostPopularPlayers';
 
 export default function MostPopularRec() {
   return (

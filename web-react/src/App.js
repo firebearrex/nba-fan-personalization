@@ -29,7 +29,7 @@ const theme = createTheme({
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Route exact path={'/'}>
+      <Route exact path={['/', '/fans/:fanEmail']}>
         <NBAFanPage />
       </Route>
       <Route exact path={'/teams/:teamName'}>

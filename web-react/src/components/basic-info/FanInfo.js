@@ -1,10 +1,18 @@
 import React from 'react';
 // import { useSelector } from 'react-redux';
-import { Divider, Paper, Stack, Typography } from '@mui/material';
+import {
+  Divider,
+  Grid,
+  ListItemButton,
+  ListItemText,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useQuery } from '@apollo/client';
 import { GET_CURRENT_FAN } from '../../graphql/keymaker';
-import recDashboardUtils from '../../utils/rec-dashboard-utils';
 import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 export default function FanInfo(props) {
   const { userEmail } = props;
@@ -44,23 +52,30 @@ export default function FanInfo(props) {
   const currFan = data.recommendations[0].item;
   console.log(currFan);
 
-  const fanCities = data.recommendations[0].details.fanCities;
-  console.log(fanCities);
+  const fanAddr = data.recommendations[0].details.fanAddr
+    ? data.recommendations[0].details.fanAddr
+    : {};
+  // console.log("The fan's addresses:", fanAddr);
 
-  const zipCodes = data.recommendations[0].details.zipcodes;
-  console.log(zipCodes);
+  const favoriteTeams = data.recommendations[0].details.favoriteTeams
+    ? data.recommendations[0].details.favoriteTeams
+    : [];
+  // console.log("The fan's favorite teams:", favoriteTeams);
 
-  const similarFans = data.recommendations[0].details.similarFans;
-  console.log(similarFans);
+  const favoritePlayers = data.recommendations[0].details.favoritePlayers
+    ? data.recommendations[0].details.favoritePlayers
+    : [];
+  // console.log("The fan's favorite players:", favoritePlayers);
 
   return (
     <Paper elevation={2} sx={{ display: 'block', mb: 2, px: 4, py: 4 }}>
       <Typography variant={'h4'} gutterBottom>
-        {`Current Fan's Information`}
+        {`Selected Fan Profile`}
       </Typography>
-      <Box ml={2}>
+      <Divider sx={{ mt: 1, mb: 1 }} />
+      <Box pt={1} ml={2} mr={2}>
         <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
-          - Personal Info:
+          - Personal info:
         </Typography>
         <Stack
           direction="row"
@@ -78,6 +93,7 @@ export default function FanInfo(props) {
             {`Gender: ${currFan.gender === 'm' ? 'Male' : 'Female'}`}
           </Typography>
         </Stack>
+        <Divider variant={'fullWidth'} sx={{ mt: 1, mb: 1 }} />
         <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
           - Address:
         </Typography>
@@ -90,27 +106,68 @@ export default function FanInfo(props) {
           sx={{ ml: 3 }}
         >
           <Typography variant={'body1'}>
-            {`City: `}
-            {fanCities.map((city, idx) => {
-              return city + (idx === fanCities.length - 1 ? '' : ' | ');
-            })}
+            {`Country: ${fanAddr.country ? fanAddr.country : 'null'}`}
           </Typography>
           <Typography variant={'body1'}>
-            {`Zipcode: `}
-            {zipCodes.map((zipcode, idx) => {
-              return zipcode + (idx === zipCodes.length - 1 ? '' : ' | ');
-            })}
+            {`City: ${fanAddr.city ? fanAddr.city : 'null'}`}
           </Typography>
           <Typography variant={'body1'}>
-            {`State: `}
-            {zipCodes.map((zipcode, idx) => {
-              return (
-                recDashboardUtils.getStateByZip(zipcode)[1] +
-                (idx === zipCodes.length - 1 ? '' : ' | ')
-              );
-            })}
+            {`Zipcode: ${fanAddr.zipCode ? fanAddr.zipCode : 'null'}`}
           </Typography>
         </Stack>
+        <Divider variant={'fullWidth'} sx={{ mt: 1, mb: 1 }} />
+        <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
+          - Favorite Teams:
+        </Typography>
+        <Grid container spacing={2} sx={{ ml: -3 }}>
+          {favoriteTeams.map((team, idx) => {
+            return (
+              <Grid key={idx} item xs={2} justifyContent={'center'}>
+                <Link
+                  to={`/teams/${team.name}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <ListItemButton divider={true}>
+                    <ListItemText
+                      primary={team.fullName}
+                      primaryTypographyProps={{
+                        color: (theme) => theme.palette.text.primary,
+                        textAlign: 'center',
+                      }}
+                      // style={{ textTransform: 'capitalize' }}
+                    />
+                  </ListItemButton>
+                </Link>
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>
+          - Favorite Players:
+        </Typography>
+        <Grid container spacing={2} sx={{ ml: -3 }}>
+          {favoritePlayers.map((player, idx) => {
+            return (
+              <Grid key={idx} item xs={2} justifyContent={'center'}>
+                <Link
+                  to={`/players/${player.name}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <ListItemButton divider={true}>
+                    <ListItemText
+                      primary={player.name.toLowerCase()}
+                      primaryTypographyProps={{
+                        color: (theme) => theme.palette.text.primary,
+                        textAlign: 'center',
+                      }}
+                      style={{ textTransform: 'capitalize' }}
+                    />
+                  </ListItemButton>
+                </Link>
+              </Grid>
+            );
+          })}
+        </Grid>
       </Box>
     </Paper>
   );
