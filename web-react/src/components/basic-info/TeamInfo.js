@@ -1,6 +1,16 @@
 import { useQuery } from '@apollo/client';
 import { GET_CURRENT_TEAM } from '../../graphql/keymaker';
-import { Paper, Skeleton, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  ListItem,
+  ListItemAvatar,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 
 export default function TeamInfo(props) {
@@ -45,51 +55,47 @@ export default function TeamInfo(props) {
   }
 
   const currTeam = data.recommendations[0].item;
-  console.log('The current team is:', currTeam);
-  // const teamRoster = data.recommendations[0].details.teamRoster;
-  // console.log(teamRoster);
+  // console.log('The current team is:', currTeam);
+
+  const teamCity = data.recommendations[0].details.teamCity;
 
   return (
     <Paper elevation={2} sx={{ display: 'block', mb: 2, px: 4, py: 4 }}>
-      <Typography variant={'h4'}>{currTeam.fullName}</Typography>
-      {/*<Box ml={2}>*/}
-      {/*  <Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>*/}
-      {/*    - Basics:*/}
-      {/*  </Typography>*/}
-      {/*  <Stack*/}
-      {/*    direction="row"*/}
-      {/*    justifyContent={'flex-start'}*/}
-      {/*    alignItems={'center'}*/}
-      {/*    divider={<Divider orientation="vertical" flexItem />}*/}
-      {/*    spacing={2}*/}
-      {/*    sx={{ ml: 3 }}*/}
-      {/*  >*/}
-      {/*    <Typography variant={'body1'}>{'Name: ' + currTeam.name}</Typography>*/}
-      {/*    <Typography variant={'body1'}>{'Rank: ' + currTeam.rank}</Typography>*/}
-      {/*    <Typography variant={'body1'}>*/}
-      {/*      {`TriCode: ${currTeam.teamTriCode}`}*/}
-      {/*    </Typography>*/}
-      {/*  </Stack>*/}
-      {/*<Typography variant={'h5'} sx={{ mt: 2, mb: 1 }}>*/}
-      {/*  - Team Roster:*/}
-      {/*</Typography>*/}
-      {/*<Stack*/}
-      {/*  direction="row"*/}
-      {/*  justifyContent={'flex-start'}*/}
-      {/*  alignItems={'center'}*/}
-      {/*  divider={<Divider orientation="vertical" flexItem />}*/}
-      {/*  spacing={2}*/}
-      {/*  sx={{ ml: 3 }}*/}
-      {/*>*/}
-      {/*  {teamRoster.map((player) => {*/}
-      {/*    return (*/}
-      {/*      <Typography key={player.name} variant={'body1'}>*/}
-      {/*        {player.name}*/}
-      {/*      </Typography>*/}
-      {/*    );*/}
-      {/*  })}*/}
-      {/*</Stack>*/}
-      {/*</Box>*/}
+      <ListItem sx={{ px: 0, py: 0 }}>
+        <ListItemAvatar>
+          <Avatar
+            variant={'square'}
+            alt={'Milwaukee Bucks Logo'}
+            src={'https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg'}
+            sx={{ width: 64, height: 64 }}
+          />
+        </ListItemAvatar>
+        <Box ml={1} display={'block'}>
+          <Typography variant={'h4'} sx={{}}>
+            {currTeam.fullName}
+          </Typography>
+          <Stack
+            direction={'row'}
+            justifyContent={'flex-start'}
+            alignItems={'center'}
+            divider={<Divider orientation="vertical" flexItem />}
+            spacing={2}
+          >
+            <Typography
+              variant={'body1'}
+              color={'text.secondary'}
+            >{`Rank: ${currTeam.rank}`}</Typography>
+            <Typography
+              variant={'body1'}
+              color={'text.secondary'}
+              sx={{ textTransform: 'capitalize' }}
+            >{`City: ${teamCity}`}</Typography>
+            <Typography variant={'body1'} color={'text.secondary'}>
+              {`Abbr: ${currTeam.teamTriCode}`}
+            </Typography>
+          </Stack>
+        </Box>
+      </ListItem>
     </Paper>
   );
 }

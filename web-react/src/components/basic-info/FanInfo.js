@@ -105,10 +105,10 @@ export default function FanInfo(props) {
           spacing={2}
           sx={{ ml: 3 }}
         >
-          <Typography variant={'body1'}>
+          <Typography variant={'body1'} sx={{ textTransform: 'capitalize' }}>
             {`Country: ${fanAddr.country ? fanAddr.country : 'null'}`}
           </Typography>
-          <Typography variant={'body1'}>
+          <Typography variant={'body1'} sx={{ textTransform: 'capitalize' }}>
             {`City: ${fanAddr.city ? fanAddr.city : 'null'}`}
           </Typography>
           <Typography variant={'body1'}>

@@ -329,14 +329,7 @@ const RecPlayersList = () => {
           </Box>
         </ListItem>
         {data.recommendations.map((player) => {
-          // const playsFor = player.details.playsFor
-          //   ? player.details.playsFor
-          //   : 'null';
-          // const playsInCity = player.details.playsInCity
-          //   ? player.details.playsIncity
-          //   : 'null';
-          const playerName = player.item.name;
-
+          const playerName = player.item.name.toLowerCase();
           const impactRanking = getImpactRanking(
             player,
             meanBoostOnRels,
@@ -360,6 +353,7 @@ const RecPlayersList = () => {
                         primaryTypographyProps={{
                           color: (theme) => theme.palette.text.primary,
                         }}
+                        style={{ textTransform: 'capitalize' }}
                       />
                     </Grid>
                     <Grid item xs={7.5}>
