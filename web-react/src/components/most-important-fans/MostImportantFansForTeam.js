@@ -34,7 +34,6 @@ export default function MostImportantFansForTeam(props) {
           maxHeight: '1095.71px',
         }}
       >
-        {/*<Typography variant={'h5'}>Loading...</Typography>*/}
         <Typography variant={'h5'}>Most Important Fans</Typography>
         <Divider sx={{ mt: 1, mb: 1 }} />
         <Skeleton
@@ -44,25 +43,6 @@ export default function MostImportantFansForTeam(props) {
       </Paper>
     );
   }
-
-  // if (error) {
-  //   console.log(error);
-  //   return (
-  //     <Paper elevation={2} sx={{ flexGrow: 1, mb: 2, px: 4, py: 4 }}>
-  //       <Typography variant={'h5'}>Oops, something went wrong...</Typography>
-  //     </Paper>
-  //   );
-  // }
-
-  // if (data.recommendations.length === 0) {
-  //   return (
-  //     <Paper elevation={2} sx={{ flexGrow: 1, mb: 2, px: 4, py: 4 }}>
-  //       <Typography variant={'h5'}>
-  //         No relevant results have been found...
-  //       </Typography>
-  //     </Paper>
-  //   );
-  // }
 
   if (!loading && !error) {
     console.log('Most important fans:', data.recommendations);
@@ -95,7 +75,7 @@ export default function MostImportantFansForTeam(props) {
               <Grid container spacing={2}>
                 <Grid
                   item
-                  xs={6}
+                  xs={3.5}
                   justifyContent={'center'}
                   alignItems={'center'}
                   style={{ paddingTop: 8, paddingBottom: 8 }}
@@ -112,24 +92,37 @@ export default function MostImportantFansForTeam(props) {
                 >
                   <ListItemText primary={'Email'} />
                 </Grid>
+                <Divider orientation={'vertical'} variant={'middle'} flexItem />
+                <Grid
+                  item
+                  xs={3}
+                  justifyContent={'center'}
+                  alignItems={'center'}
+                  style={{ paddingTop: 8, paddingBottom: 8 }}
+                >
+                  <ListItemText
+                    primary={'Games Watched'}
+                    sx={{ textAlign: 'center' }}
+                  />
+                </Grid>
               </Grid>
             </Box>
           </ListItem>
           {data.recommendations.map((fan) => {
             const fanName = fan.item.displayName;
             const fanEmail = fan.item.email;
+            const gamesWatched = fan.score;
 
             return (
               <Link
                 to={`/fans/${fanEmail}`}
                 key={fanEmail}
-                // className={classes.linkText}
                 style={{ textDecoration: 'none' }}
               >
                 <ListItem sx={{ px: 0, py: 0 }}>
                   <ListItemButton divider={true}>
                     <Grid container spacing={2} alignItems={'center'}>
-                      <Grid item xs={6}>
+                      <Grid item xs={3.5}>
                         <ListItemText
                           primary={fanName}
                           primaryTypographyProps={{
@@ -143,6 +136,15 @@ export default function MostImportantFansForTeam(props) {
                           primary={fanEmail}
                           primaryTypographyProps={{
                             color: (theme) => theme.palette.text.primary,
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={3}>
+                        <ListItemText
+                          primary={gamesWatched}
+                          primaryTypographyProps={{
+                            color: (theme) => theme.palette.text.primary,
+                            textAlign: 'center',
                           }}
                         />
                       </Grid>

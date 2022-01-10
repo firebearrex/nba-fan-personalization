@@ -22,6 +22,7 @@ import { GET_RECOMMENDED_PLAYERS } from '../../graphql/keymaker';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import Looks3Icon from '@mui/icons-material/Looks3';
+import { blue } from '@mui/material/colors';
 
 const useStyles = makeStyles(() => {
   return {
@@ -313,7 +314,12 @@ const RecPlayersList = () => {
                 alignItems={'center'}
                 style={{ paddingTop: 8, paddingBottom: 8 }}
               >
-                <ListItemText primary={'Name'} />
+                <ListItemText
+                  primary={'Name'}
+                  primaryTypographyProps={{
+                    fontWeight: 'bold',
+                  }}
+                />
               </Grid>
               <Divider orientation={'vertical'} variant={'middle'} flexItem />
               <Grid
@@ -323,7 +329,12 @@ const RecPlayersList = () => {
                 alignItems={'center'}
                 style={{ paddingTop: 8, paddingBottom: 8 }}
               >
-                <ListItemText primary={'Impact factors'} />
+                <ListItemText
+                  primary={'Influence Rank'}
+                  primaryTypographyProps={{
+                    fontWeight: 'bold',
+                  }}
+                />
               </Grid>
             </Grid>
           </Box>
@@ -347,16 +358,34 @@ const RecPlayersList = () => {
               <ListItem sx={{ px: 0, py: 0 }}>
                 <ListItemButton divider={true}>
                   <Grid container spacing={2} alignItems={'center'}>
-                    <Grid item xs={4.5}>
+                    <Grid
+                      item
+                      xs={4.5}
+                      alignItems={'center'}
+                      justifyContent={'flex-start'}
+                      sx={{ display: 'flex' }}
+                    >
                       <ListItemText
-                        primary={playerName}
+                        primary={
+                          <>
+                            <span>
+                              {`${playerName
+                                .split(' ')
+                                .slice(0, -1)
+                                .join(' ')} `}
+                            </span>
+                            <span style={{ fontWeight: 'bold' }}>
+                              {`${playerName.split(' ').slice(-1)[0]}`}
+                            </span>
+                          </>
+                        }
                         primaryTypographyProps={{
                           color: (theme) => theme.palette.text.primary,
                         }}
                         style={{ textTransform: 'capitalize' }}
                       />
                     </Grid>
-                    <Grid item xs={7.5}>
+                    <Grid item xs>
                       <Stack
                         justifyContent={'center'}
                         alignItems={'stretch'}
@@ -364,13 +393,14 @@ const RecPlayersList = () => {
                           <Divider variant={'middle'} flexItem sx={{ my: 1 }} />
                         }
                       >
-                        <Tooltip title={'Primary impact'} followCursor={true}>
+                        <Tooltip title={'Primary factor'} followCursor={true}>
                           <Paper
                             elevation={0}
                             sx={{
-                              bgcolor: 'rgb(253, 237, 237)',
+                              // bgcolor: 'rgb(253, 237, 237)',
+                              bgcolor: blue[800],
                               borderRadius: '4px',
-                              px: '16px',
+                              pl: '8px',
                               py: '4px',
                             }}
                           >
@@ -379,41 +409,57 @@ const RecPlayersList = () => {
                               spacing={0}
                               sx={{
                                 justifyContent: 'flex-start',
-                                alignItems: 'stretch',
+                                alignItems: 'center',
                               }}
                             >
                               <ListItemIcon
                                 sx={{
                                   alignItems: 'center',
                                   minWidth: 0,
-                                  width: 36,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
                                 }}
                               >
-                                <LooksOneIcon sx={{ color: 'red' }} />
+                                <LooksOneIcon
+                                  sx={{
+                                    color: blue[900],
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
                               </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                bgcolor={'common.white'}
+                              />
                               <ListItemText
                                 compopnent={'div'}
                                 sx={{
                                   display: 'flex',
                                   alignItems: 'stretch',
+                                  ml: 1.5,
                                 }}
                                 secondary={impactRanking[0].impactName}
                                 secondaryTypographyProps={{
-                                  // textAlign: 'center',
                                   variant: 'body2',
-                                  color: 'rgb(95, 33, 32)',
+                                  // color: 'rgb(95, 33, 32)',
+                                  color: 'common.white',
                                 }}
                               />
                             </Stack>
                           </Paper>
                         </Tooltip>
-                        <Tooltip title={'Secondary impact'} followCursor={true}>
+                        <Tooltip title={'Secondary factor'} followCursor={true}>
                           <Paper
                             elevation={0}
                             sx={{
-                              bgcolor: 'rgb(255, 244, 229)',
+                              // bgcolor: 'rgb(255, 244, 229)',
+                              bgcolor: blue[600],
                               borderRadius: '4px',
-                              px: '16px',
+                              pl: '8px',
                               py: '4px',
                             }}
                           >
@@ -422,39 +468,56 @@ const RecPlayersList = () => {
                               spacing={0}
                               sx={{
                                 justifyContent: 'flex-start',
-                                alignItems: 'stretch',
+                                alignItems: 'center',
                               }}
                             >
                               <ListItemIcon
                                 sx={{
                                   alignItems: 'center',
                                   minWidth: 0,
-                                  width: 36,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
                                 }}
                               >
-                                <LooksTwoIcon sx={{ color: 'orange' }} />
+                                <LooksTwoIcon
+                                  sx={{
+                                    color: blue[900],
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
                               </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                bgcolor={'common.white'}
+                              />
                               <ListItemText
                                 sx={{
                                   display: 'flex',
                                   alignItems: 'stretch',
+                                  ml: 1.5,
                                 }}
                                 secondary={impactRanking[1].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
-                                  color: 'rgb(102, 60, 0)',
+                                  // color: 'rgb(102, 60, 0)',
+                                  color: 'common.white',
                                 }}
                               />
                             </Stack>
                           </Paper>
                         </Tooltip>
-                        <Tooltip title={'Least impact'} followCursor={true}>
+                        <Tooltip title={'Minor factor'} followCursor={true}>
                           <Paper
                             elevation={0}
                             sx={{
-                              bgcolor: 'rgb(237, 247, 237)',
+                              // bgcolor: 'rgb(237, 247, 237)',
+                              bgcolor: blue[400],
                               borderRadius: '4px',
-                              px: '16px',
+                              pl: '8px',
                               py: '4px',
                             }}
                           >
@@ -463,27 +526,37 @@ const RecPlayersList = () => {
                               spacing={0}
                               sx={{
                                 justifyContent: 'flex-start',
-                                alignItems: 'stretch',
+                                alignItems: 'center',
                               }}
                             >
                               <ListItemIcon
                                 sx={{
                                   alignItems: 'center',
                                   minWidth: 0,
-                                  width: 36,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
                                 }}
                               >
-                                <Looks3Icon sx={{ color: 'green' }} />
+                                <Looks3Icon sx={{ color: blue[900] }} />
                               </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                bgcolor={'common.white'}
+                              />
                               <ListItemText
                                 sx={{
                                   display: 'flex',
                                   alignItems: 'stretch',
+                                  ml: 1.5,
                                 }}
                                 secondary={impactRanking[2].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
-                                  color: 'rgb(30, 70, 32)',
+                                  // color: 'rgb(30, 70, 32)',
+                                  color: 'common.white',
                                 }}
                               />
                             </Stack>
@@ -492,20 +565,6 @@ const RecPlayersList = () => {
                       </Stack>
                     </Grid>
                   </Grid>
-                  {/*<ListItemText*/}
-                  {/*  primary={player.item.name}*/}
-                  {/*  secondary={*/}
-                  {/*    <>*/}
-                  {/*      <span>- Plays for team: {playsFor}</span>*/}
-                  {/*      <br />*/}
-                  {/*      <span>- Plays in City: {playsInCity}</span>*/}
-                  {/*    </>*/}
-                  {/*  }*/}
-                  {/*  primaryTypographyProps={{*/}
-                  {/*    color: (theme) => theme.palette.text.primary,*/}
-                  {/*  }}*/}
-                  {/*  secondaryTypographyProps={{ pl: 1 }}*/}
-                  {/*/>*/}
                 </ListItemButton>
               </ListItem>
             </Link>

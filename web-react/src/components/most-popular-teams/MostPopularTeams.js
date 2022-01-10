@@ -1,16 +1,17 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import {
+  Avatar,
   Box,
   Divider,
   Grid,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Paper,
   Rating,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
@@ -128,12 +129,17 @@ export default function MostPopularTeams() {
             <Grid container spacing={2}>
               <Grid
                 item
-                xs={5}
+                xs={4.5}
                 justifyContent={'center'}
                 alignItems={'center'}
                 style={{ paddingTop: 8, paddingBottom: 8 }}
               >
-                <ListItemText primary={'Name'} />
+                <ListItemText
+                  primary={'Name'}
+                  primaryTypographyProps={{
+                    fontWeight: 'bold',
+                  }}
+                />
               </Grid>
               <Divider orientation={'vertical'} variant={'middle'} flexItem />
               <Grid
@@ -143,26 +149,32 @@ export default function MostPopularTeams() {
                 alignItems={'center'}
                 style={{ paddingTop: 8, paddingBottom: 8 }}
               >
-                <ListItemText primary={'Popularity'} />
+                <ListItemText
+                  primary={'Popularity'}
+                  primaryTypographyProps={{
+                    fontWeight: 'bold',
+                  }}
+                />
               </Grid>
             </Grid>
           </Box>
         </ListItem>
-        {data.recommendations.slice(0, 10).map((team) => {
-          const teamName = team.item.name;
+        {data.recommendations.slice(0, 10).map((team, idx) => {
+          const teamName = team.item.fullName;
           const recScore = team.score;
+          const teamLogo = team.item.teamLogo;
 
           return (
             <Link
-              to={`/teams/${teamName}`}
-              key={teamName}
+              to={`/teams/${team.item.name}`}
+              key={idx}
               className={classes.linkText}
-              // style={{ textDecoration: 'none' }}
             >
               <ListItem sx={{ px: 0, py: 0 }}>
                 <ListItemButton
                   divider={
-                    <Divider variant={'middle'} flexItem sx={{ my: 1 }} />
+                    // <Divider variant={'middle'} flexItem sx={{ my: 1 }} />
+                    true
                   }
                 >
                   <Grid
@@ -171,35 +183,52 @@ export default function MostPopularTeams() {
                     alignItems={'center'}
                     sx={{ mt: -1.5 }}
                   >
-                    <Grid item xs={5}>
-                      <ListItemText
-                        primary={teamName}
-                        primaryTypographyProps={{
-                          color: (theme) => theme.palette.text.primary,
-                        }}
-                      />
+                    <Grid
+                      item
+                      xs={4.5}
+                      alignItems={'center'}
+                      justifyContent={'flex-start'}
+                      sx={{ display: 'flex' }}
+                    >
+                      <ListItemAvatar sx={{ minWidth: 32 }}>
+                        <Avatar
+                          variant={'square'}
+                          alt={`${teamName} Logo`}
+                          src={teamLogo}
+                          sx={{ width: 32, height: 32 }}
+                        />
+                      </ListItemAvatar>
+                      <Box ml={1} flexGrow={1} display={'block'}>
+                        <ListItemText
+                          primary={teamName.split(' ').slice(0, -1).join(' ')}
+                          primaryTypographyProps={{
+                            color: (theme) => theme.palette.text.primary,
+                          }}
+                        />
+                        <ListItemText
+                          primary={teamName.split(' ').slice(-1)}
+                          primaryTypographyProps={{
+                            color: (theme) => theme.palette.text.primary,
+                            fontWeight: 'bold',
+                          }}
+                        />
+                      </Box>
                     </Grid>
                     <Grid
                       item
                       xs
-                      justifyContent={'center'}
-                      alignItems={'stretch'}
+                      // justifyContent={'center'}
+                      alignItems={'center'}
                     >
-                      <Tooltip title={teamName} followCursor={true}>
-                        <Rating
-                          defaultValue={getPopularity(
-                            baseScore,
-                            range,
-                            recScore
-                          )}
-                          max={maxPopLevel}
-                          precision={0.5}
-                          icon={<PersonIcon />}
-                          emptyIcon={<PersonOutlineIcon />}
-                          sx={{ color: 'rgb(29,66,138)' }}
-                          readOnly={true}
-                        />
-                      </Tooltip>
+                      <Rating
+                        defaultValue={getPopularity(baseScore, range, recScore)}
+                        max={maxPopLevel}
+                        precision={0.5}
+                        icon={<PersonIcon />}
+                        emptyIcon={<PersonOutlineIcon />}
+                        sx={{ color: 'rgb(29,66,138)' }}
+                        readOnly={true}
+                      />
                     </Grid>
                   </Grid>
                 </ListItemButton>

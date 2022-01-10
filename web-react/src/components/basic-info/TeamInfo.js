@@ -65,14 +65,21 @@ export default function TeamInfo(props) {
         <ListItemAvatar>
           <Avatar
             variant={'square'}
-            alt={'Milwaukee Bucks Logo'}
-            src={'https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg'}
+            alt={`${currTeam.fullName} Logo`}
+            src={currTeam.teamLogo}
             sx={{ width: 64, height: 64 }}
           />
         </ListItemAvatar>
         <Box ml={1} display={'block'}>
-          <Typography variant={'h4'} sx={{}}>
-            {currTeam.fullName}
+          <Typography variant={'h4'}>
+            {/* {currTeam.fullName} */}
+            <p style={{ display: 'inline' }}>{`${currTeam.fullName
+              .split(' ')
+              .slice(0, -1)
+              .join(' ')} `}</p>
+            <p style={{ display: 'inline', fontWeight: 'bold' }}>{`${
+              currTeam.fullName.split(' ').slice(-1)[0]
+            }`}</p>
           </Typography>
           <Stack
             direction={'row'}

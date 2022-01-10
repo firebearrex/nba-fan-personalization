@@ -8,7 +8,7 @@ import MostImportantFansForTeam from '../components/most-important-fans/MostImpo
 
 export default function NBATeamPage() {
   const { teamName } = useParams();
-  console.log(teamName);
+  // console.log(teamName);
   return (
     <Box>
       <MyAppBar pageTitle={'NBA Team Page'} />
