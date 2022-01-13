@@ -120,7 +120,7 @@ export default function FanInfo(props) {
           - Favorite Teams:
         </Typography>
         <Grid container spacing={2} sx={{ ml: -3 }}>
-          {favoriteTeams.map((team, idx) => {
+          {favoriteTeams.slice(0, 3).map((team, idx) => {
             return (
               <Grid key={idx} item xs={2} justifyContent={'center'}>
                 <Link
@@ -146,7 +146,7 @@ export default function FanInfo(props) {
           - Favorite Players:
         </Typography>
         <Grid container spacing={2} sx={{ ml: -3 }}>
-          {favoritePlayers.map((player, idx) => {
+          {favoritePlayers.slice(0, 5).map((player, idx) => {
             return (
               <Grid key={idx} item xs={2} justifyContent={'center'}>
                 <Link

@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 
 import {
+  Avatar,
   Box,
   Divider,
   Grid,
@@ -22,7 +23,7 @@ import { GET_RECOMMENDED_PLAYERS } from '../../graphql/keymaker';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import Looks3Icon from '@mui/icons-material/Looks3';
-import { blue } from '@mui/material/colors';
+import { brown, lime, orange } from '@mui/material/colors';
 
 const useStyles = makeStyles(() => {
   return {
@@ -183,6 +184,17 @@ const RecPlayersList = () => {
     variables: { email: fanEmail },
   });
 
+  const getCategoryColor = (influenceFactor) => {
+    switch (influenceFactor) {
+      case 'Team rank':
+        return lime[700];
+      case 'Age diff with similar fans':
+        return orange['A400'];
+      case 'Relationship with similar fans':
+        return brown[400];
+    }
+  };
+
   if (loading) {
     return (
       <Paper
@@ -299,10 +311,6 @@ const RecPlayersList = () => {
       </Typography>
       <Divider sx={{ mt: 1, mb: 1 }} />
 
-      {/* Recommendation Rank */}
-      {/* <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}> */}
-      {/*   Recommendation Rank: */}
-      {/* </Typography> */}
       <List>
         <ListItem sx={{ px: 0, py: 0 }} divider={true}>
           <Box sx={{ py: 1, px: 2, width: '100%' }}>
@@ -341,13 +349,14 @@ const RecPlayersList = () => {
         </ListItem>
         {data.recommendations.map((player) => {
           const playerName = player.item.name.toLowerCase();
+          const playsFor = player.details.playsFor;
           const impactRanking = getImpactRanking(
             player,
             meanBoostOnRels,
             meanBoostOnAgeDiff,
             meanBoostOnRank
           );
-          console.log('impactRanking:', impactRanking);
+          // console.log('impactRanking:', impactRanking);
 
           return (
             <Link
@@ -382,6 +391,20 @@ const RecPlayersList = () => {
                         primaryTypographyProps={{
                           color: (theme) => theme.palette.text.primary,
                         }}
+                        secondary={
+                          <Box display={'flex'} alignItems={'center'}>
+                            <Avatar
+                              variant={'square'}
+                              alt={`${playsFor.fullName} Logo`}
+                              src={playsFor.teamLogo}
+                              sx={{ width: 24, height: 24 }}
+                            />
+                            <span>{`${playsFor.fullName}`}</span>
+                          </Box>
+                        }
+                        secondaryTypographyProps={{
+                          component: 'div',
+                        }}
                         style={{ textTransform: 'capitalize' }}
                       />
                     </Grid>
@@ -397,8 +420,6 @@ const RecPlayersList = () => {
                           <Paper
                             elevation={0}
                             sx={{
-                              // bgcolor: 'rgb(253, 237, 237)',
-                              bgcolor: blue[800],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -423,7 +444,7 @@ const RecPlayersList = () => {
                               >
                                 <LooksOneIcon
                                   sx={{
-                                    color: blue[900],
+                                    color: 'background.paper',
                                     width: '100%',
                                     height: '100%',
                                   }}
@@ -433,7 +454,35 @@ const RecPlayersList = () => {
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <LooksOneIcon
+                                  sx={{
+                                    color: getCategoryColor(
+                                      impactRanking[0].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[0].impactName
+                                )}
                               />
                               <ListItemText
                                 compopnent={'div'}
@@ -445,8 +494,7 @@ const RecPlayersList = () => {
                                 secondary={impactRanking[0].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
-                                  // color: 'rgb(95, 33, 32)',
-                                  color: 'common.white',
+                                  color: 'text.primary',
                                 }}
                               />
                             </Stack>
@@ -456,8 +504,6 @@ const RecPlayersList = () => {
                           <Paper
                             elevation={0}
                             sx={{
-                              // bgcolor: 'rgb(255, 244, 229)',
-                              bgcolor: blue[600],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -482,7 +528,7 @@ const RecPlayersList = () => {
                               >
                                 <LooksTwoIcon
                                   sx={{
-                                    color: blue[900],
+                                    color: 'background.paper',
                                     width: '100%',
                                     height: '100%',
                                   }}
@@ -492,7 +538,36 @@ const RecPlayersList = () => {
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <LooksTwoIcon
+                                  sx={{
+                                    // color: blue[900],
+                                    color: getCategoryColor(
+                                      impactRanking[1].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[1].impactName
+                                )}
                               />
                               <ListItemText
                                 sx={{
@@ -503,8 +578,7 @@ const RecPlayersList = () => {
                                 secondary={impactRanking[1].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
-                                  // color: 'rgb(102, 60, 0)',
-                                  color: 'common.white',
+                                  color: 'text.primary',
                                 }}
                               />
                             </Stack>
@@ -514,8 +588,6 @@ const RecPlayersList = () => {
                           <Paper
                             elevation={0}
                             sx={{
-                              // bgcolor: 'rgb(237, 247, 237)',
-                              bgcolor: blue[400],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -538,13 +610,47 @@ const RecPlayersList = () => {
                                   zIndex: 1,
                                 }}
                               >
-                                <Looks3Icon sx={{ color: blue[900] }} />
+                                <Looks3Icon
+                                  sx={{
+                                    color: 'background.paper',
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
                               </ListItemIcon>
                               <Box
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <Looks3Icon
+                                  sx={{
+                                    color: getCategoryColor(
+                                      impactRanking[2].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[2].impactName
+                                )}
                               />
                               <ListItemText
                                 sx={{
@@ -555,8 +661,7 @@ const RecPlayersList = () => {
                                 secondary={impactRanking[2].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
-                                  // color: 'rgb(30, 70, 32)',
-                                  color: 'common.white',
+                                  color: 'text.primary',
                                 }}
                               />
                             </Stack>

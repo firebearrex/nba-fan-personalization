@@ -24,7 +24,7 @@ import { GET_RECOMMENDED_TEAMS } from '../../graphql/keymaker';
 import LooksOneIcon from '@mui/icons-material/LooksOne';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import Looks3Icon from '@mui/icons-material/Looks3';
-import { blue } from '@mui/material/colors';
+import { brown, lime, orange } from '@mui/material/colors';
 
 const useStyles = makeStyles(() => {
   return {
@@ -56,7 +56,8 @@ const getMeanBoostOnAgeDiff = (data) => {
   data.recommendations.forEach((rec) => {
     totalAgeDiff += rec.details.boostOnAgeDiff;
   });
-  return Math.abs(totalAgeDiff / data.recommendations.length);
+  // return Math.abs(totalAgeDiff / data.recommendations.length);
+  return totalAgeDiff / data.recommendations.length;
 };
 
 /**
@@ -67,7 +68,8 @@ const getMeanBoostOnRank = (data) => {
   data.recommendations.forEach((rec) => {
     totalRank += rec.details.boostOnRank;
   });
-  return Math.abs(totalRank / data.recommendations.length);
+  // return Math.abs(totalRank / data.recommendations.length);
+  return totalRank / data.recommendations.length;
 };
 
 /**
@@ -81,7 +83,8 @@ const getBoostOnRelsImpact = (recTeam, meanBoostOnRels) => {
   const boostOnRelsScore = recTeam.details.boostOnRels
     ? recTeam.details.boostOnRels
     : 0;
-  return Math.abs(boostOnRelsScore - meanBoostOnRels) / meanBoostOnRels;
+  // return Math.abs(boostOnRelsScore - meanBoostOnRels) / meanBoostOnRels;
+  return boostOnRelsScore - meanBoostOnRels;
 };
 
 /**
@@ -95,10 +98,11 @@ const getBoostOnAgeDiffImpact = (recTeam, meanBoostOnAgeDiff) => {
   const boostOnAgeDiffScore = recTeam.details.boostOnAgeDiff
     ? recTeam.details.boostOnAgeDiff
     : 0;
-  return (
-    Math.abs(Math.abs(boostOnAgeDiffScore) - meanBoostOnAgeDiff) /
-    meanBoostOnAgeDiff
-  );
+  // return (
+  //   Math.abs(Math.abs(boostOnAgeDiffScore) - meanBoostOnAgeDiff) /
+  //   meanBoostOnAgeDiff
+  // );
+  return boostOnAgeDiffScore - meanBoostOnAgeDiff;
 };
 
 /**
@@ -112,10 +116,11 @@ const getBoostOnRankImpact = (recTeam, meanBoostOnRank) => {
   const boostOnRankImpactScore = recTeam.details.boostOnRank
     ? recTeam.details.boostOnRank
     : 0;
-  return (
-    Math.abs(Math.abs(boostOnRankImpactScore) - meanBoostOnRank) /
-    meanBoostOnRank
-  );
+  // return (
+  //   Math.abs(Math.abs(boostOnRankImpactScore) - meanBoostOnRank) /
+  //   meanBoostOnRank
+  // );
+  return boostOnRankImpactScore - meanBoostOnRank;
 };
 
 /**
@@ -134,19 +139,25 @@ const getImpactRanking = (
   meanBoostOnRank
 ) => {
   const boostOnRelsImpact = getBoostOnRelsImpact(recTeam, meanBoostOnRels);
-  console.log(`boostOnRelsImpact of ${recTeam.item.name}: `, boostOnRelsImpact);
+  console.log(
+    `boostOnRelsImpact of ${recTeam.item.name} for RecTeamsList: `,
+    boostOnRelsImpact
+  );
 
   const boostOnAgeDiffImpact = getBoostOnAgeDiffImpact(
     recTeam,
     meanBoostOnAgeDiff
   );
   console.log(
-    `boostOnAgeDiffImpact of ${recTeam.item.name}: `,
+    `boostOnAgeDiffImpact of ${recTeam.item.name} for RecTeamsList: `,
     boostOnAgeDiffImpact
   );
 
   const boostOnRankImpact = getBoostOnRankImpact(recTeam, meanBoostOnRank);
-  console.log(`boostOnRankImpact of ${recTeam.item.name}: `, boostOnRankImpact);
+  console.log(
+    `boostOnRankImpact of ${recTeam.item.name} for RecTeamsList: `,
+    boostOnRankImpact
+  );
 
   const impactRanking = [
     {
@@ -178,6 +189,17 @@ const RecTeamsList = () => {
     // fetchPolicy: 'no-cache',
     variables: { email: fanEmail },
   });
+
+  const getCategoryColor = (influenceFactor) => {
+    switch (influenceFactor) {
+      case 'Team rank':
+        return lime[700];
+      case 'Age diff with similar fans':
+        return orange['A400'];
+      case 'Relationship with similar fans':
+        return brown[400];
+    }
+  };
 
   if (loading) {
     return (
@@ -267,11 +289,11 @@ const RecTeamsList = () => {
    * Get the mean values for further calculating the impact factors.
    */
   const meanBoostOnRels = getMeanBoostOnRels(data);
-  console.log('meanBoostOnRels:', meanBoostOnRels);
+  console.log('meanBoostOnRels - Team List:', meanBoostOnRels);
   const meanBoostOnAgeDiff = getMeanBoostOnAgeDiff(data);
-  console.log('meanBoostOnAgeDiff:', meanBoostOnAgeDiff);
+  console.log('meanBoostOnAgeDiff - Team List:', meanBoostOnAgeDiff);
   const meanBoostOnRank = getMeanBoostOnRank(data);
-  console.log('meanBoostOnRank:', meanBoostOnRank);
+  console.log('meanBoostOnRank - Team List:', meanBoostOnRank);
 
   return (
     <Paper
@@ -399,7 +421,7 @@ const RecTeamsList = () => {
                             elevation={0}
                             sx={{
                               // bgcolor: 'rgb(253, 237, 237)',
-                              bgcolor: blue[800],
+                              // bgcolor: blue[800],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -424,7 +446,7 @@ const RecTeamsList = () => {
                               >
                                 <LooksOneIcon
                                   sx={{
-                                    color: blue[900],
+                                    color: 'background.paper',
                                     width: '100%',
                                     height: '100%',
                                   }}
@@ -434,7 +456,35 @@ const RecTeamsList = () => {
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <LooksOneIcon
+                                  sx={{
+                                    color: getCategoryColor(
+                                      impactRanking[0].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[0].impactName
+                                )}
                               />
                               <ListItemText
                                 compopnent={'div'}
@@ -446,8 +496,9 @@ const RecTeamsList = () => {
                                 secondary={impactRanking[0].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
+                                  color: 'text.primary',
                                   // color: 'rgb(95, 33, 32)',
-                                  color: 'common.white',
+                                  // color: 'common.white',
                                 }}
                               />
                             </Stack>
@@ -458,7 +509,7 @@ const RecTeamsList = () => {
                             elevation={0}
                             sx={{
                               // bgcolor: 'rgb(255, 244, 229)',
-                              bgcolor: blue[600],
+                              // bgcolor: blue[600],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -483,7 +534,7 @@ const RecTeamsList = () => {
                               >
                                 <LooksTwoIcon
                                   sx={{
-                                    color: blue[900],
+                                    color: 'background.paper',
                                     width: '100%',
                                     height: '100%',
                                   }}
@@ -493,7 +544,36 @@ const RecTeamsList = () => {
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <LooksTwoIcon
+                                  sx={{
+                                    // color: blue[900],
+                                    color: getCategoryColor(
+                                      impactRanking[1].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[1].impactName
+                                )}
                               />
                               <ListItemText
                                 sx={{
@@ -504,8 +584,9 @@ const RecTeamsList = () => {
                                 secondary={impactRanking[1].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
+                                  color: 'text.primary',
                                   // color: 'rgb(102, 60, 0)',
-                                  color: 'common.white',
+                                  // color: 'common.white',
                                 }}
                               />
                             </Stack>
@@ -516,7 +597,7 @@ const RecTeamsList = () => {
                             elevation={0}
                             sx={{
                               // bgcolor: 'rgb(237, 247, 237)',
-                              bgcolor: blue[400],
+                              // bgcolor: blue[400],
                               borderRadius: '4px',
                               pl: '8px',
                               py: '4px',
@@ -539,13 +620,47 @@ const RecTeamsList = () => {
                                   zIndex: 1,
                                 }}
                               >
-                                <Looks3Icon sx={{ color: blue[900] }} />
+                                <Looks3Icon
+                                  sx={{
+                                    color: 'background.paper',
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
                               </ListItemIcon>
                               <Box
                                 ml={'-19px'}
                                 width={14}
                                 height={14}
-                                bgcolor={'common.white'}
+                                bgcolor={'text.primary'}
+                              />
+                              <ListItemIcon
+                                sx={{
+                                  alignItems: 'center',
+                                  minWidth: 0,
+                                  width: 24,
+                                  height: 24,
+                                  zIndex: 1,
+                                }}
+                              >
+                                <Looks3Icon
+                                  sx={{
+                                    color: getCategoryColor(
+                                      impactRanking[2].impactName
+                                    ),
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </ListItemIcon>
+                              <Box
+                                ml={'-19px'}
+                                width={14}
+                                height={14}
+                                // bgcolor={'common.white'}
+                                bgcolor={getCategoryColor(
+                                  impactRanking[2].impactName
+                                )}
                               />
                               <ListItemText
                                 sx={{
@@ -556,8 +671,9 @@ const RecTeamsList = () => {
                                 secondary={impactRanking[2].impactName}
                                 secondaryTypographyProps={{
                                   variant: 'body2',
+                                  color: 'text.primary',
                                   // color: 'rgb(30, 70, 32)',
-                                  color: 'common.white',
+                                  // color: 'common.white',
                                 }}
                               />
                             </Stack>

@@ -21,7 +21,7 @@ import Looks3Icon from '@mui/icons-material/Looks3';
 
 import { GET_SIMILAR_FANS } from '../../graphql/keymaker';
 import { useHistory, useParams } from 'react-router-dom';
-import { blue, brown, lime, orange } from '@mui/material/colors';
+import { brown, lime, orange } from '@mui/material/colors';
 
 /**
  * Calculate the mean value of Boost Phase 1 - Boost on Common Team Interest.
@@ -147,7 +147,7 @@ const getImpactRanking = (
     },
     {
       impactScore: commonAgeDiffImpact,
-      impactName: 'Age difference',
+      impactName: 'Age similarity',
     },
   ];
 
@@ -174,7 +174,7 @@ const RecFansList = () => {
 
   const getCategoryColor = (influenceFactor) => {
     switch (influenceFactor) {
-      case 'Age difference':
+      case 'Age similarity':
         return lime[700];
       case 'Player interest':
         return orange['A400'];
@@ -384,7 +384,7 @@ const RecFansList = () => {
                           elevation={0}
                           sx={{
                             // bgcolor: 'rgb(253, 237, 237)',
-                            bgcolor: blue[800],
+                            // bgcolor: blue[800],
                             borderRadius: '4px',
                             pl: '8px',
                             py: '4px',
@@ -398,6 +398,29 @@ const RecFansList = () => {
                               alignItems: 'center',
                             }}
                           >
+                            <ListItemIcon
+                              sx={{
+                                alignItems: 'center',
+                                minWidth: 0,
+                                width: 24,
+                                height: 24,
+                                zIndex: 1,
+                              }}
+                            >
+                              <LooksOneIcon
+                                sx={{
+                                  color: 'background.paper',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              />
+                            </ListItemIcon>
+                            <Box
+                              ml={'-19px'}
+                              width={14}
+                              height={14}
+                              bgcolor={'text.primary'}
+                            />
                             <ListItemIcon
                               sx={{
                                 alignItems: 'center',
@@ -436,8 +459,9 @@ const RecFansList = () => {
                               secondary={impactRanking[0].impactName}
                               secondaryTypographyProps={{
                                 variant: 'body2',
+                                color: 'text.primary',
                                 // color: 'rgb(95, 33, 32)',
-                                color: 'common.white',
+                                // color: 'common.white',
                                 // color: getCategoryColor(
                                 //   impactRanking[0].impactName
                                 // ),
@@ -451,7 +475,7 @@ const RecFansList = () => {
                           elevation={0}
                           sx={{
                             // bgcolor: 'rgb(255, 244, 229)',
-                            bgcolor: blue[600],
+                            // bgcolor: blue[600],
                             borderRadius: '4px',
                             pl: '8px',
                             py: '4px',
@@ -465,6 +489,29 @@ const RecFansList = () => {
                               alignItems: 'center',
                             }}
                           >
+                            <ListItemIcon
+                              sx={{
+                                alignItems: 'center',
+                                minWidth: 0,
+                                width: 24,
+                                height: 24,
+                                zIndex: 1,
+                              }}
+                            >
+                              <LooksTwoIcon
+                                sx={{
+                                  color: 'background.paper',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              />
+                            </ListItemIcon>
+                            <Box
+                              ml={'-19px'}
+                              width={14}
+                              height={14}
+                              bgcolor={'text.primary'}
+                            />
                             <ListItemIcon
                               sx={{
                                 alignItems: 'center',
@@ -502,8 +549,9 @@ const RecFansList = () => {
                               secondary={impactRanking[1].impactName}
                               secondaryTypographyProps={{
                                 variant: 'body2',
+                                color: 'text.primary',
                                 // color: 'rgb(102, 60, 0)',
-                                color: 'common.white',
+                                // color: 'common.white',
                                 // color: getCategoryColor(
                                 //   impactRanking[1].impactName
                                 // ),
@@ -517,7 +565,7 @@ const RecFansList = () => {
                           elevation={0}
                           sx={{
                             // bgcolor: 'rgb(237, 247, 237)',
-                            bgcolor: blue[400],
+                            // bgcolor: blue[400],
                             borderRadius: '4px',
                             pl: '8px',
                             py: '4px',
@@ -542,6 +590,29 @@ const RecFansList = () => {
                             >
                               <Looks3Icon
                                 sx={{
+                                  color: 'background.paper',
+                                  width: '100%',
+                                  height: '100%',
+                                }}
+                              />
+                            </ListItemIcon>
+                            <Box
+                              ml={'-19px'}
+                              width={14}
+                              height={14}
+                              bgcolor={'text.primary'}
+                            />
+                            <ListItemIcon
+                              sx={{
+                                alignItems: 'center',
+                                minWidth: 0,
+                                width: 24,
+                                height: 24,
+                                zIndex: 1,
+                              }}
+                            >
+                              <Looks3Icon
+                                sx={{
                                   color: getCategoryColor(
                                     impactRanking[2].impactName
                                   ),
@@ -554,10 +625,10 @@ const RecFansList = () => {
                               ml={'-19px'}
                               width={14}
                               height={14}
-                              bgcolor={'common.white'}
-                              // bgcolor={getCategoryColor(
-                              //   impactRanking[2].impactName
-                              // )}
+                              // bgcolor={'common.white'}
+                              bgcolor={getCategoryColor(
+                                impactRanking[2].impactName
+                              )}
                             />
                             <ListItemText
                               sx={{
@@ -568,8 +639,9 @@ const RecFansList = () => {
                               secondary={impactRanking[2].impactName}
                               secondaryTypographyProps={{
                                 variant: 'body2',
+                                color: 'text.primary',
                                 // color: 'rgb(30, 70, 32)',
-                                color: 'common.white',
+                                // color: 'common.white',
                                 // color: getCategoryColor(
                                 //   impactRanking[2].impactName
                                 // ),
