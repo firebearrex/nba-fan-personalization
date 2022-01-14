@@ -24,6 +24,13 @@ import { useHistory, useParams } from 'react-router-dom';
 import { brown, lime, orange } from '@mui/material/colors';
 
 /**
+ * The recommendation influence factors
+ */
+const AGE_SIMILARITY = 'Age similarity';
+const PLAYER_INTEREST = 'Player interest';
+const TEAM_INTEREST = 'Team interest';
+
+/**
  * Calculate the mean value of Boost Phase 1 - Boost on Common Team Interest.
  */
 const getMeanCommonTeams = (data) => {
@@ -53,7 +60,8 @@ const getMeanAgeDiff = (data) => {
   data.recommendations.forEach((rec) => {
     totalAgeDiff += rec.details.boostOnAgeDiffScore;
   });
-  return Math.abs(totalAgeDiff / data.recommendations.length);
+  // return Math.abs(totalAgeDiff / data.recommendations.length);
+  return totalAgeDiff / data.recommendations.length;
 };
 
 /**
@@ -67,7 +75,8 @@ const getCommonTeamsImpact = (similarFan, meanCommonTeams) => {
   const boostOnCommonTeamScore = similarFan.details.boostOnCommonTeamScore
     ? similarFan.details.boostOnCommonTeamScore
     : 0;
-  return Math.abs(boostOnCommonTeamScore - meanCommonTeams) / meanCommonTeams;
+  // return Math.abs(boostOnCommonTeamScore - meanCommonTeams) / meanCommonTeams;
+  return boostOnCommonTeamScore - meanCommonTeams;
 };
 
 /**
@@ -81,9 +90,10 @@ const getCommonPlayersImpact = (similarFan, meanCommonPlayers) => {
   const boostOnCommonPlayerScore = similarFan.details.boostOnCommonPlayerScore
     ? similarFan.details.boostOnCommonPlayerScore
     : 0;
-  return (
-    Math.abs(boostOnCommonPlayerScore - meanCommonPlayers) / meanCommonPlayers
-  );
+  // return (
+  //   Math.abs(boostOnCommonPlayerScore - meanCommonPlayers) / meanCommonPlayers
+  // );
+  return boostOnCommonPlayerScore - meanCommonPlayers;
 };
 
 /**
@@ -97,7 +107,8 @@ const getAgeDiffImpact = (similarFan, meanAgeDiff) => {
   const boostOnAgeDiffScore = similarFan.details.boostOnAgeDiffScore
     ? similarFan.details.boostOnAgeDiffScore
     : 0;
-  return Math.abs(Math.abs(boostOnAgeDiffScore) - meanAgeDiff) / meanAgeDiff;
+  // return Math.abs(Math.abs(boostOnAgeDiffScore) - meanAgeDiff) / meanAgeDiff;
+  return boostOnAgeDiffScore - meanAgeDiff;
 };
 
 /**
@@ -117,7 +128,7 @@ const getImpactRanking = (
 ) => {
   const commonTeamImpact = getCommonTeamsImpact(similarFan, meanCommonTeams);
   console.log(
-    `commonTeamImpact of ${similarFan.item.displayName}: `,
+    `commonTeamImpact of ${similarFan.item.displayName} for RecFansList: `,
     commonTeamImpact
   );
 
@@ -126,28 +137,28 @@ const getImpactRanking = (
     meanCommonPlayers
   );
   console.log(
-    `commonPlayersImpact of ${similarFan.item.displayName}: `,
+    `commonPlayersImpact of ${similarFan.item.displayName} for RecFansList: `,
     commonPlayersImpact
   );
 
   const commonAgeDiffImpact = getAgeDiffImpact(similarFan, meanAgeDiff);
   console.log(
-    `commonAgeDiffImpact of ${similarFan.item.displayName}: `,
+    `commonAgeDiffImpact of ${similarFan.item.displayName} for RecFansList: `,
     commonAgeDiffImpact
   );
 
   const impactRanking = [
     {
       impactScore: commonTeamImpact,
-      impactName: 'Team interest',
+      impactName: TEAM_INTEREST,
     },
     {
       impactScore: commonPlayersImpact,
-      impactName: 'Player interest',
+      impactName: PLAYER_INTEREST,
     },
     {
       impactScore: commonAgeDiffImpact,
-      impactName: 'Age similarity',
+      impactName: AGE_SIMILARITY,
     },
   ];
 
@@ -174,11 +185,11 @@ const RecFansList = () => {
 
   const getCategoryColor = (influenceFactor) => {
     switch (influenceFactor) {
-      case 'Age similarity':
+      case AGE_SIMILARITY:
         return lime[700];
-      case 'Player interest':
+      case PLAYER_INTEREST:
         return orange['A400'];
-      case 'Team interest':
+      case TEAM_INTEREST:
         return brown[400];
     }
   };
@@ -299,10 +310,6 @@ const RecFansList = () => {
       </Typography>
       <Divider sx={{ mt: 1, mb: 1 }} />
 
-      {/* Section 1: Recommendation Rank */}
-      {/* <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}> */}
-      {/*   Recommendation Rank: */}
-      {/* </Typography> */}
       <List>
         <ListItem sx={{ px: 0, py: 0 }} divider={true}>
           <Box sx={{ py: 1, px: 2, width: '100%' }}>

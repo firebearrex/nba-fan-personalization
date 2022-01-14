@@ -38,6 +38,13 @@ const useStyles = makeStyles(() => {
 });
 
 /**
+ * The recommendation influence factors
+ */
+const REL_WITH_SIMILAR_FANS = 'Relationship with similar fans';
+const AGE_DIFF_WITH_SIMILAR_FANS = 'Age diff with similar fans';
+const TEAM_RANK = 'Team rank';
+
+/**
  * Calculate the mean value of Boost Phase 1 - Boost on Number of Relationships with Similar Fans.
  */
 const getMeanBoostOnRels = (data) => {
@@ -162,15 +169,15 @@ const getImpactRanking = (
   const impactRanking = [
     {
       impactScore: boostOnRelsImpact,
-      impactName: 'Relationship with similar fans',
+      impactName: REL_WITH_SIMILAR_FANS,
     },
     {
       impactScore: boostOnAgeDiffImpact,
-      impactName: 'Age diff with similar fans',
+      impactName: AGE_DIFF_WITH_SIMILAR_FANS,
     },
     {
       impactScore: boostOnRankImpact,
-      impactName: 'Team rank',
+      impactName: TEAM_RANK,
     },
   ];
 
@@ -317,10 +324,6 @@ const RecTeamsList = () => {
       </Typography>
       <Divider sx={{ mt: 1, mb: 1 }} />
 
-      {/* Recommendation Rank */}
-      {/* <Typography variant={'h5'} sx={{ mt: 3, mb: 1 }}> */}
-      {/*   Recommendation Rank: */}
-      {/* </Typography> */}
       <List>
         <ListItem sx={{ px: 0, py: 0 }} divider={true}>
           <Box sx={{ py: 1, px: 2, width: '100%' }}>

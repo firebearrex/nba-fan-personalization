@@ -37,6 +37,13 @@ const useStyles = makeStyles(() => {
 });
 
 /**
+ * The recommendation influence factors
+ */
+const REL_WITH_SIMILAR_FANS = 'Relationship with similar fans';
+const AGE_DIFF_WITH_SIMILAR_FANS = 'Age diff with similar fans';
+const TEAM_RANK = 'Team rank';
+
+/**
  * Calculate the mean value of Boost Phase 1 - Boost on Number of Relationships with Similar Fans.
  *
  * @param data the Keymaker recommendation data.
@@ -59,7 +66,8 @@ const getMeanBoostOnAgeDiff = (data) => {
   data.recommendations.forEach((rec) => {
     totalAgeDiff += rec.details.boostOnAgeDiff;
   });
-  return Math.abs(totalAgeDiff / data.recommendations.length);
+  // return Math.abs(totalAgeDiff / data.recommendations.length);
+  return totalAgeDiff / data.recommendations.length;
 };
 
 /**
@@ -72,7 +80,8 @@ const getMeanBoostOnRank = (data) => {
   data.recommendations.forEach((rec) => {
     totalRank += rec.details.boostOnRank;
   });
-  return Math.abs(totalRank / data.recommendations.length);
+  // return Math.abs(totalRank / data.recommendations.length);
+  return totalRank / data.recommendations.length;
 };
 
 /**
@@ -86,7 +95,8 @@ const getBoostOnRelsImpact = (recTeam, meanBoostOnRels) => {
   const boostOnRelsScore = recTeam.details.boostOnRels
     ? recTeam.details.boostOnRels
     : 0;
-  return Math.abs(boostOnRelsScore - meanBoostOnRels) / meanBoostOnRels;
+  // return Math.abs(boostOnRelsScore - meanBoostOnRels) / meanBoostOnRels;
+  return boostOnRelsScore - meanBoostOnRels;
 };
 
 /**
@@ -100,10 +110,11 @@ const getBoostOnAgeDiffImpact = (recTeam, meanBoostOnAgeDiff) => {
   const boostOnAgeDiffScore = recTeam.details.boostOnAgeDiff
     ? recTeam.details.boostOnAgeDiff
     : 0;
-  return (
-    Math.abs(Math.abs(boostOnAgeDiffScore) - meanBoostOnAgeDiff) /
-    meanBoostOnAgeDiff
-  );
+  // return (
+  //   Math.abs(Math.abs(boostOnAgeDiffScore) - meanBoostOnAgeDiff) /
+  //   meanBoostOnAgeDiff
+  // );
+  return boostOnAgeDiffScore - meanBoostOnAgeDiff;
 };
 
 /**
@@ -117,54 +128,61 @@ const getBoostOnRankImpact = (recTeam, meanBoostOnRank) => {
   const boostOnRankImpactScore = recTeam.details.boostOnRank
     ? recTeam.details.boostOnRank
     : 0;
-  return (
-    Math.abs(Math.abs(boostOnRankImpactScore) - meanBoostOnRank) /
-    meanBoostOnRank
-  );
+  // return (
+  //   Math.abs(Math.abs(boostOnRankImpactScore) - meanBoostOnRank) /
+  //   meanBoostOnRank
+  // );
+  return boostOnRankImpactScore - meanBoostOnRank;
 };
 
 /**
  * Sort the impact factor's list.
  *
- * @param recTeam the recommended team.
+ * @param recPlayer the recommended team.
  * @param meanBoostOnRels the pre-computed mean value of boostOnRels score.
  * @param meanBoostOnAgeDiff the pre-computed mean value of boostOnAgeDiff score.
  * @param meanBoostOnRank the pre-computed mean value of boostOnRank score.
  * @returns {[{impactName: string, impactScore: number}]} the sorted impact list
  */
 const getImpactRanking = (
-  recTeam,
+  recPlayer,
   meanBoostOnRels,
   meanBoostOnAgeDiff,
   meanBoostOnRank
 ) => {
-  const boostOnRelsImpact = getBoostOnRelsImpact(recTeam, meanBoostOnRels);
-  console.log(`boostOnRelsImpact of ${recTeam.item.name}: `, boostOnRelsImpact);
+  const boostOnRelsImpact = getBoostOnRelsImpact(recPlayer, meanBoostOnRels);
+  console.log(
+    `boostOnRelsImpact of ${recPlayer.item.name} for RecPlayerList: `,
+    boostOnRelsImpact
+  );
 
   const boostOnAgeDiffImpact = getBoostOnAgeDiffImpact(
-    recTeam,
+    recPlayer,
     meanBoostOnAgeDiff
   );
   console.log(
-    `boostOnAgeDiffImpact of ${recTeam.item.name}: `,
+    `boostOnAgeDiffImpact of ${recPlayer.item.name} for RecPlayerList: `,
     boostOnAgeDiffImpact
   );
 
-  const boostOnRankImpact = getBoostOnRankImpact(recTeam, meanBoostOnRank);
-  console.log(`boostOnRankImpact of ${recTeam.item.name}: `, boostOnRankImpact);
+  const boostOnRankImpact = getBoostOnRankImpact(recPlayer, meanBoostOnRank);
+  console.log(
+    `boostOnRankImpact of ${recPlayer.item.name} for RecPlayerList: `,
+    boostOnRankImpact
+  );
 
   const impactRanking = [
     {
       impactScore: boostOnRelsImpact,
-      impactName: 'Relationship with similar fans',
+      impactName: REL_WITH_SIMILAR_FANS,
     },
     {
       impactScore: boostOnAgeDiffImpact,
-      impactName: 'Age diff with similar fans',
+      impactName: AGE_DIFF_WITH_SIMILAR_FANS,
     },
     {
       impactScore: boostOnRankImpact,
-      impactName: 'Team rank',
+      impactName: TEAM_RANK,
     },
   ];
 
@@ -186,11 +204,11 @@ const RecPlayersList = () => {
 
   const getCategoryColor = (influenceFactor) => {
     switch (influenceFactor) {
-      case 'Team rank':
+      case TEAM_RANK:
         return lime[700];
-      case 'Age diff with similar fans':
+      case AGE_DIFF_WITH_SIMILAR_FANS:
         return orange['A400'];
-      case 'Relationship with similar fans':
+      case REL_WITH_SIMILAR_FANS:
         return brown[400];
     }
   };
