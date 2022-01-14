@@ -20,58 +20,13 @@ import { Route, useHistory } from 'react-router-dom';
 import NBAFanPageRecs from '../components/layout/NBAFanPageRecs';
 import MostPopularRec from '../components/layout/MostPopularRec';
 
-// const drawerWidth = 240;
-
-// const useStyles = makeStyles((theme) => {
-//   return {
-//     paper: {
-//       padding: theme.spacing(2),
-//       display: 'flex',
-// overflow: 'auto',
-// flexDirection: 'column',
-//     },
-//   };
-//   page: {
-//     background: '#f9f9f9',
-//     width: '100%',
-//     height: '100%',
-//     padding: theme.spacing(3),
-//   },
-//   drawerPaper: {
-//     width: drawerWidth,
-//   },
-//   active: {
-//     background: '#f4f4f4',
-//   },
-//   title: {
-//     padding: theme.spacing(2),
-//   },
-//   toolbar: theme.mixins.toolbar,
-//   avatar: {
-//     marginLeft: theme.spacing(2),
-//   },
-// };
-// });
-
 export default function NBAFanPage() {
-  // const classes = useStyles();
-  // const theme = useTheme();
   const history = useHistory();
 
   const [userEmailSelect, setUserEmailSelect] = useState('');
-  // const [selectSubmit, setSelectSubmit] = useState(false);
   const [userEmailInput, setUserEmailInput] = useState('');
-  // const [inputSubmit, setInputSubmit] = useState(false);
-  // const [fanEmailSimilar, setFanEmailSimilar] = useState('');
-  // const [similarFanSubmit, setSimilarFanSubmit] = useState(false);
 
   const { loading, error, data } = useQuery(MOST_ACTIVE_FANS, {});
-
-  // const whichEmail = () => {
-  //   if (userEmailSelect) return userEmailSelect;
-  //   else if (userEmailInput) return userEmailInput;
-  //   else if (fanEmailSimilar) return fanEmailSimilar;
-  // };
 
   const handleUserEmailSelect = (e) => {
     e.preventDefault();
@@ -79,24 +34,19 @@ export default function NBAFanPage() {
     const val = e.target.value;
     console.log(val);
 
-    // setUserEmailInput('');
-    // setFanEmailSimilar('');
-    // setInputSubmit(false);
-    // setSimilarFanSubmit(false);
-
     if (val !== '') {
       setUserEmailSelect(val);
-      // setSelectSubmit(true);
+      setUserEmailInput('');
       history.push(`/fans/${val}`);
     } else {
-      // setUserEmailSelect('');
-      // setSelectSubmit(false);
+      setUserEmailSelect('');
+      history.push(`/`);
     }
   };
 
   const handleUserInputChange = (event) => {
     const val = event.target.value;
-    console.log(val);
+    // console.log(val);
     setUserEmailInput(val);
   };
 
@@ -104,12 +54,8 @@ export default function NBAFanPage() {
     event.preventDefault();
 
     if (userEmailInput) {
-      console.log('The submitted email is:', userEmailInput);
+      // console.log('The submitted email is:', userEmailInput);
       setUserEmailSelect('');
-      // setFanEmailSimilar('');
-      // setSelectSubmit(false);
-      // setSimilarFanSubmit(false);
-      // setInputSubmit(true);
       history.push(`/fans/${userEmailInput}`);
     } else {
       alert("Please enter the fan's e-mail address before submitting.");
@@ -147,15 +93,9 @@ export default function NBAFanPage() {
                 mb: 0.5,
                 flexDirection: 'row',
                 alignItems: 'center',
-                // backgroundColor: (theme) =>
-                //   alpha(theme.palette.background.paper, 0.25),
-                // '&:hover': {
-                //   backgroundColor: (theme) =>
-                //     alpha(theme.palette.grey['300'], 0.4),
-                // },
               }}
             >
-              <InputLabel id={'select-fan'}>
+              <InputLabel id={'select-fan'} sx={{ fontSize: '1.1rem' }}>
                 Select a fan to view the recommendations
               </InputLabel>
               <Select
@@ -194,7 +134,17 @@ export default function NBAFanPage() {
                 flexDirection: 'row',
               }}
             >
+              {/* The InputLabelProps setting is for making the label text larger */}
               <TextField
+                InputLabelProps={{
+                  sx: {
+                    fontSize: '1.1rem',
+                    zIndex: 2,
+                    width: 'auto',
+                    bgcolor: 'background.paper',
+                    pr: '5px',
+                  },
+                }}
                 id={'search'}
                 label="Search by user's email to view the recommendations"
                 value={userEmailInput}

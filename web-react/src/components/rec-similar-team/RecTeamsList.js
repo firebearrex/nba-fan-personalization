@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => {
  * The recommendation influence factors
  */
 const REL_WITH_SIMILAR_FANS = 'Relationship with similar fans';
-const AGE_DIFF_WITH_SIMILAR_FANS = 'Age diff with similar fans';
+const AGE_SIMILARITY_WITH_SIMILAR_FANS = 'Age similarity with similar fans';
 const TEAM_RANK = 'Team rank';
 
 /**
@@ -173,7 +173,7 @@ const getImpactRanking = (
     },
     {
       impactScore: boostOnAgeDiffImpact,
-      impactName: AGE_DIFF_WITH_SIMILAR_FANS,
+      impactName: AGE_SIMILARITY_WITH_SIMILAR_FANS,
     },
     {
       impactScore: boostOnRankImpact,
@@ -199,11 +199,11 @@ const RecTeamsList = () => {
 
   const getCategoryColor = (influenceFactor) => {
     switch (influenceFactor) {
-      case 'Team rank':
+      case TEAM_RANK:
         return lime[700];
-      case 'Age diff with similar fans':
+      case AGE_SIMILARITY_WITH_SIMILAR_FANS:
         return orange['A400'];
-      case 'Relationship with similar fans':
+      case REL_WITH_SIMILAR_FANS:
         return brown[400];
     }
   };
